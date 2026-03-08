@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -554,7 +555,7 @@
       transition:transform .32s cubic-bezier(.32,.72,0,1),opacity .22s;
     }
     #mod-ov.open #mod-box{transform:translateY(0);opacity:1;}
-    .mod-img{width:100%;height:220px;object-fit:cover;display:block;border-radius:20px 20px 0 0;}
+    .mod-img{width:100%;height:260px;object-fit:cover;object-position:center;display:block;border-radius:20px 20px 0 0;}
     .mod-img-ph{
       width:100%;height:180px;
       background:linear-gradient(145deg,var(--s2),var(--s3));
@@ -608,9 +609,9 @@
 
     /* ===== CARRUSEL DE FOTOS ===== */
     .mod-carousel{ position:relative; width:100%; overflow:hidden; border-radius:20px 20px 0 0; background:var(--s2); }
-    .mod-carousel-track{ display:flex; transition:transform .3s cubic-bezier(.32,.72,0,1); will-change:transform; }
+    .mod-carousel-track{ display:flex; transition:transform .3s cubic-bezier(.32,.72,0,1); will-change:transform; border-radius:20px 20px 0 0; overflow:hidden; }
     .mod-carousel-slide{ min-width:100%; position:relative; }
-    .mod-carousel-slide img{ width:100%; height:220px; object-fit:cover; display:block; }
+    .mod-carousel-slide img{ width:100%; height:260px; object-fit:cover; object-position:center; display:block; }
     .mod-carousel-slide .mod-img-ph{ border-radius:0; }
     .mod-carousel-dots{ position:absolute; bottom:10px; left:50%; transform:translateX(-50%); display:flex; gap:5px; z-index:3; }
     .mod-carousel-dot{ width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.4); border:none; cursor:pointer; padding:0; transition:all .2s; }
@@ -697,12 +698,14 @@
     .status-badge.open{background:rgba(34,197,94,.15);color:var(--green);}
     .status-badge.closed{background:rgba(239,68,68,.12);color:var(--red);}
   </style>
+
 </head>
 
 <body>
   <div id="toast"></div>
 
   <!-- HEADER -->
+
   <header>
     <div class="hd-l" onclick="goView('store')">
       <div class="hd-logo" id="hd-logo">V</div>
@@ -718,6 +721,7 @@
   </header>
 
   <!-- STORE VIEW -->
+
   <div id="store-v" class="view active">
     <!-- CLOSED BANNER -->
     <div id="closed-banner" style="background:#1a1a1f;border-bottom:1px solid var(--red);padding:13px 16px;align-items:center;gap:12px;">
@@ -728,83 +732,87 @@
       </div>
     </div>
 
-    <div class="hero">
-      <div class="hero-row">
-        <div>
-          <div class="hero-pill"><span></span>Tienda online</div>
-          <h1 id="h-title">Pedí lo que<br><em>necesitás</em></h1>
-          <p class="hero-sub" id="h-sub">Elegí y coordiná tu pedido por WhatsApp.</p>
+```
+<div class="hero">
+  <div class="hero-row">
+    <div>
+      <div class="hero-pill"><span></span>Tienda online</div>
+      <h1 id="h-title">Pedí lo que<br><em>necesitás</em></h1>
+      <p class="hero-sub" id="h-sub">Elegí y coordiná tu pedido por WhatsApp.</p>
+    </div>
+  </div>
+  <div class="search-wrap" id="search-wrap" style="display:none;">
+    <span class="s-ico">⌕</span>
+    <input type="text" id="s-in" placeholder="Buscar en esta categoría..." oninput="renderCategoryProducts()">
+  </div>
+</div>
+
+<div class="store-wrap">
+  <!-- CATEGORIES HOME -->
+  <div id="homeCats">
+    <div class="sec-hd">
+      <h3>Categorías</h3>
+      <div class="sec-hd-right">
+        <span style="font-size:.72rem;color:var(--txt3);font-weight:600;">Vista de productos:</span>
+        <div class="view-toggle">
+          <button class="vtb" id="vtb-list-home" onclick="setProductView('list')" title="Vista lista">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <rect x="0" y="1" width="15" height="2.5" rx="1.2" fill="currentColor"/>
+              <rect x="0" y="6.25" width="15" height="2.5" rx="1.2" fill="currentColor"/>
+              <rect x="0" y="11.5" width="15" height="2.5" rx="1.2" fill="currentColor"/>
+            </svg>
+          </button>
+          <button class="vtb" id="vtb-grid-home" onclick="setProductView('grid')" title="Vista grilla">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <rect x="0" y="0" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
+              <rect x="8.5" y="0" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
+              <rect x="0" y="8.5" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
+              <rect x="8.5" y="8.5" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
+            </svg>
+          </button>
         </div>
-      </div>
-      <div class="search-wrap" id="search-wrap" style="display:none;">
-        <span class="s-ico">⌕</span>
-        <input type="text" id="s-in" placeholder="Buscar en esta categoría..." oninput="renderCategoryProducts()">
       </div>
     </div>
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
 
-    <div class="store-wrap">
-      <!-- CATEGORIES HOME -->
-      <div id="homeCats">
-        <div class="sec-hd">
-          <h3>Categorías</h3>
-          <div class="sec-hd-right">
-            <span style="font-size:.72rem;color:var(--txt3);font-weight:600;">Vista de productos:</span>
-            <div class="view-toggle">
-              <button class="vtb" id="vtb-list-home" onclick="setProductView('list')" title="Vista lista">
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                  <rect x="0" y="1" width="15" height="2.5" rx="1.2" fill="currentColor"/>
-                  <rect x="0" y="6.25" width="15" height="2.5" rx="1.2" fill="currentColor"/>
-                  <rect x="0" y="11.5" width="15" height="2.5" rx="1.2" fill="currentColor"/>
-                </svg>
-              </button>
-              <button class="vtb" id="vtb-grid-home" onclick="setProductView('grid')" title="Vista grilla">
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                  <rect x="0" y="0" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
-                  <rect x="8.5" y="0" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
-                  <rect x="0" y="8.5" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
-                  <rect x="8.5" y="8.5" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
-                </svg>
-              </button>
-            </div>
-          </div>
+  <!-- CATEGORY VIEW -->
+  <div id="catView" style="display:none;">
+    <div class="sec-hd">
+      <h3 id="catTitle">Categoría</h3>
+      <div class="sec-hd-right">
+        <!-- VIEW TOGGLE -->
+        <div class="view-toggle" id="view-toggle">
+          <button class="vtb" id="vtb-list" onclick="setProductView('list')" title="Vista lista">
+            <!-- List icon -->
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <rect x="0" y="1" width="15" height="2.5" rx="1.2" fill="currentColor"/>
+              <rect x="0" y="6.25" width="15" height="2.5" rx="1.2" fill="currentColor"/>
+              <rect x="0" y="11.5" width="15" height="2.5" rx="1.2" fill="currentColor"/>
+            </svg>
+          </button>
+          <button class="vtb" id="vtb-grid" onclick="setProductView('grid')" title="Vista grilla">
+            <!-- Grid icon -->
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <rect x="0" y="0" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
+              <rect x="8.5" y="0" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
+              <rect x="0" y="8.5" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
+              <rect x="8.5" y="8.5" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
+            </svg>
+          </button>
         </div>
-        <div class="cat-grid" id="catGrid"></div>
-      </div>
-
-      <!-- CATEGORY VIEW -->
-      <div id="catView" style="display:none;">
-        <div class="sec-hd">
-          <h3 id="catTitle">Categoría</h3>
-          <div class="sec-hd-right">
-            <!-- VIEW TOGGLE -->
-            <div class="view-toggle" id="view-toggle">
-              <button class="vtb" id="vtb-list" onclick="setProductView('list')" title="Vista lista">
-                <!-- List icon -->
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                  <rect x="0" y="1" width="15" height="2.5" rx="1.2" fill="currentColor"/>
-                  <rect x="0" y="6.25" width="15" height="2.5" rx="1.2" fill="currentColor"/>
-                  <rect x="0" y="11.5" width="15" height="2.5" rx="1.2" fill="currentColor"/>
-                </svg>
-              </button>
-              <button class="vtb" id="vtb-grid" onclick="setProductView('grid')" title="Vista grilla">
-                <!-- Grid icon -->
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                  <rect x="0" y="0" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
-                  <rect x="8.5" y="0" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
-                  <rect x="0" y="8.5" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
-                  <rect x="8.5" y="8.5" width="6.5" height="6.5" rx="1.5" fill="currentColor"/>
-                </svg>
-              </button>
-            </div>
-            <button class="hd-btn" style="height:32px" onclick="backToCats()">← Volver</button>
-          </div>
-        </div>
-        <div id="prodWrap"></div>
+        <button class="hd-btn" style="height:32px" onclick="backToCats()">← Volver</button>
       </div>
     </div>
+    <div id="prodWrap"></div>
+  </div>
+</div>
+```
+
   </div>
 
   <!-- ADMIN VIEW -->
+
   <div id="admin-v" class="view">
     <div id="adm-wrap">
       <h2 class="adm-title">Panel admin</h2>
@@ -816,211 +824,215 @@
         <button class="atb" onclick="swTab('t-stats',this);renderStats()">📊 Stats</button>
       </div>
 
-      <!-- CONFIG -->
-      <div id="t-cfg" class="adm-tab on">
-        <div class="acard">
-          <h4>Tu comercio</h4>
-          <div class="fg">
-            <div class="fr">
-              <div class="fl"><label>Nombre</label><input id="c-name" placeholder="Mi Tienda"></div>
-              <div class="fl">
-                <label>Moneda</label>
-                <select id="c-cur">
-                  <option value="$">$ ARS</option>
-                  <option value="USD">USD</option>
-                  <option value="€">€</option>
-                  <option value="CLP$">CLP$</option>
-                </select>
-              </div>
-            </div>
-            <div class="fl"><label>Eslogan</label><input id="c-slogan" placeholder="Elegí y coordiná tu pedido por WhatsApp."></div>
-            <div class="fl"><label>WhatsApp (código + número)</label><input id="c-wa" type="tel" placeholder="5493511234567"></div>
-            <div class="fl">
-              <label>Logo (subir desde el celu) - opcional</label>
-              <input id="c-logo" type="file" accept="image/*">
-              <div style="font-size:.72rem;color:var(--txt3);margin-top:6px">Si subís un logo, reemplaza la letra del circulito.</div>
-            </div>
-
-            <!-- Vista por defecto -->
-            <div class="fl">
-              <label>Vista de productos por defecto</label>
-              <select id="c-default-view">
-                <option value="list">📋 Lista (descripción visible)</option>
-                <option value="grid">⊞ Grilla (2 columnas, estilo tienda)</option>
-              </select>
-              <div style="font-size:.72rem;color:var(--txt3);margin-top:6px">El cliente puede cambiarla en cualquier momento con los botones.</div>
-            </div>
-          </div>
-          <div class="btn-row">
-            <button class="btn-p" onclick="saveCfg()">Guardar</button>
+```
+  <!-- CONFIG -->
+  <div id="t-cfg" class="adm-tab on">
+    <div class="acard">
+      <h4>Tu comercio</h4>
+      <div class="fg">
+        <div class="fr">
+          <div class="fl"><label>Nombre</label><input id="c-name" placeholder="Mi Tienda"></div>
+          <div class="fl">
+            <label>Moneda</label>
+            <select id="c-cur">
+              <option value="$">$ ARS</option>
+              <option value="USD">USD</option>
+              <option value="€">€</option>
+              <option value="CLP$">CLP$</option>
+            </select>
           </div>
         </div>
-
-        <div class="acard">
-          <h4>🕐 Horario del comercio <span id="live-status-badge" class="status-badge"></span></h4>
-          <div class="fg">
-            <div class="fl">
-              <label>Modo</label>
-              <select id="c-status" onchange="toggleScheduleMode()">
-                <option value="always">🌙 Abierto 24hs</option>
-                <option value="schedule">📅 Horarios por día (automático)</option>
-              </select>
-            </div>
-            <div class="fl"><label>Mensaje cuando está cerrado (opcional)</label><input id="c-closed-msg" placeholder="Ej: Abrimos mañana a las 9hs"></div>
-          </div>
-          <div id="schedule-wrap" style="display:none;margin-top:12px;">
-            <div style="font-size:.72rem;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">Configurá los horarios de cada día</div>
-            <div id="schedule-days" style="display:flex;flex-direction:column;gap:8px;"></div>
-          </div>
-          <div class="btn-row" style="margin-top:14px;">
-            <button class="btn-p" onclick="saveStatus()">Guardar horario</button>
-          </div>
+        <div class="fl"><label>Eslogan</label><input id="c-slogan" placeholder="Elegí y coordiná tu pedido por WhatsApp."></div>
+        <div class="fl"><label>WhatsApp (código + número)</label><input id="c-wa" type="tel" placeholder="5493511234567"></div>
+        <div class="fl">
+          <label>Logo (subir desde el celu) - opcional</label>
+          <input id="c-logo" type="file" accept="image/*">
+          <div style="font-size:.72rem;color:var(--txt3);margin-top:6px">Si subís un logo, reemplaza la letra del circulito.</div>
         </div>
 
-        <div class="acard">
-          <h4>Colores de la tienda</h4>
-          <div class="fg">
-            <div class="fr">
-              <div class="fl"><label>Fondo</label><input id="th-bg" type="color"></div>
-              <div class="fl"><label>Encabezado</label><input id="th-hd" type="color"></div>
-            </div>
-            <div class="fr">
-              <div class="fl"><label>Acento (botones)</label><input id="th-ac" type="color"></div>
-              <div class="fl"><label>Acento 2 (gradiente)</label><input id="th-ac2" type="color"></div>
-            </div>
-            <div class="fl"><label>Paletas rápidas</label><div class="paletteRow" id="palRow"></div></div>
-          </div>
-          <div class="btn-row">
-            <button class="btn-p" onclick="saveTheme()">Guardar colores</button>
-            <button class="btn-s" onclick="resetTheme()">Reset</button>
-          </div>
-        </div>
-
-        <div class="acard">
-          <h4>Entrega</h4>
-          <div class="fg">
-            <div class="fr">
-              <div class="fl"><label>Delivery</label><select id="d-del"><option value="1">Sí</option><option value="0">No</option></select></div>
-              <div class="fl"><label>Retiro</label><select id="d-ret"><option value="1">Sí</option><option value="0">No</option></select></div>
-            </div>
-            <div class="fl"><label>Dirección de retiro</label><input id="c-retaddr" placeholder="Ej: Av. Corrientes 1234, CABA"></div>
-            <div class="fl"><label>Referencia / indicaciones</label><input id="c-retref" placeholder="Ej: Portón azul, tocar timbre"></div>
-            <div class="fl"><label>Costo de envío (0 = gratis)</label><input id="c-delcost" type="number" placeholder="500"></div>
-          </div>
-        </div>
-
-        <div class="acard">
-          <h4>Métodos de pago</h4>
-          <div class="fg">
-            <div class="fl">
-              <label>Seleccioná</label>
-              <select id="paySel" multiple size="5" style="height:140px">
-                <option>Efectivo</option><option>Transferencia</option>
-                <option>Mercado Pago</option><option>Débito</option>
-                <option>Crédito</option><option>Ualá</option>
-              </select>
-              <div style="font-size:.73rem;color:var(--txt3);margin-top:6px">Tip: mantené apretado para seleccionar varios.</div>
-            </div>
-          </div>
-          <div class="btn-row"><button class="btn-p" onclick="savePays()">Guardar pagos</button></div>
+        <!-- Vista por defecto -->
+        <div class="fl">
+          <label>Vista de productos por defecto</label>
+          <select id="c-default-view">
+            <option value="list">📋 Lista (descripción visible)</option>
+            <option value="grid">⊞ Grilla (2 columnas, estilo tienda)</option>
+          </select>
+          <div style="font-size:.72rem;color:var(--txt3);margin-top:6px">El cliente puede cambiarla en cualquier momento con los botones.</div>
         </div>
       </div>
+      <div class="btn-row">
+        <button class="btn-p" onclick="saveCfg()">Guardar</button>
+      </div>
+    </div>
 
-      <!-- CATEGORIES -->
-      <div id="t-cats" class="adm-tab">
-        <div class="acard">
-          <h4>Agregar categoría (banner principal)</h4>
-          <div class="fg">
-            <div class="fr">
-              <div class="fl"><label>Nombre interno</label><input id="cat-name" placeholder="Ej: Perfumes"></div>
-              <div class="fl"><label>Título del banner (opcional)</label><input id="cat-title" placeholder="Vacío = solo imagen"></div>
-            </div>
-            <div class="fl"><label>Imagen del banner</label><input id="cat-img" type="file" accept="image/*"></div>
-          </div>
-          <div class="btn-row">
-            <button class="btn-p" onclick="addCategory()">Agregar</button>
-            <button class="btn-s" onclick="clearCatForm()">Limpiar</button>
-          </div>
+    <div class="acard">
+      <h4>🕐 Horario del comercio <span id="live-status-badge" class="status-badge"></span></h4>
+      <div class="fg">
+        <div class="fl">
+          <label>Modo</label>
+          <select id="c-status" onchange="toggleScheduleMode()">
+            <option value="always">🌙 Abierto 24hs</option>
+            <option value="schedule">📅 Horarios por día (automático)</option>
+          </select>
         </div>
-        <div class="acard">
-          <h4>Categorías</h4>
-          <div class="plist" id="cat-list"></div>
-          <div class="mini" id="no-cats" style="display:none;">Sin categorías aún.</div>
+        <div class="fl"><label>Mensaje cuando está cerrado (opcional)</label><input id="c-closed-msg" placeholder="Ej: Abrimos mañana a las 9hs"></div>
+      </div>
+      <div id="schedule-wrap" style="display:none;margin-top:12px;">
+        <div style="font-size:.72rem;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">Configurá los horarios de cada día</div>
+        <div id="schedule-days" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+      <div class="btn-row" style="margin-top:14px;">
+        <button class="btn-p" onclick="saveStatus()">Guardar horario</button>
+      </div>
+    </div>
+
+    <div class="acard">
+      <h4>Colores de la tienda</h4>
+      <div class="fg">
+        <div class="fr">
+          <div class="fl"><label>Fondo</label><input id="th-bg" type="color"></div>
+          <div class="fl"><label>Encabezado</label><input id="th-hd" type="color"></div>
+        </div>
+        <div class="fr">
+          <div class="fl"><label>Acento (botones)</label><input id="th-ac" type="color"></div>
+          <div class="fl"><label>Acento 2 (gradiente)</label><input id="th-ac2" type="color"></div>
+        </div>
+        <div class="fl"><label>Paletas rápidas</label><div class="paletteRow" id="palRow"></div></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-p" onclick="saveTheme()">Guardar colores</button>
+        <button class="btn-s" onclick="resetTheme()">Reset</button>
+      </div>
+    </div>
+
+    <div class="acard">
+      <h4>Entrega</h4>
+      <div class="fg">
+        <div class="fr">
+          <div class="fl"><label>Delivery</label><select id="d-del"><option value="1">Sí</option><option value="0">No</option></select></div>
+          <div class="fl"><label>Retiro</label><select id="d-ret"><option value="1">Sí</option><option value="0">No</option></select></div>
+        </div>
+        <div class="fl"><label>Dirección de retiro</label><input id="c-retaddr" placeholder="Ej: Av. Corrientes 1234, CABA"></div>
+        <div class="fl"><label>Referencia / indicaciones</label><input id="c-retref" placeholder="Ej: Portón azul, tocar timbre"></div>
+        <div class="fl"><label>Costo de envío (0 = gratis)</label><input id="c-delcost" type="number" placeholder="500"></div>
+      </div>
+    </div>
+
+    <div class="acard">
+      <h4>Métodos de pago</h4>
+      <div class="fg">
+        <div class="fl">
+          <label>Seleccioná</label>
+          <select id="paySel" multiple size="5" style="height:140px">
+            <option>Efectivo</option><option>Transferencia</option>
+            <option>Mercado Pago</option><option>Débito</option>
+            <option>Crédito</option><option>Ualá</option>
+          </select>
+          <div style="font-size:.73rem;color:var(--txt3);margin-top:6px">Tip: mantené apretado para seleccionar varios.</div>
         </div>
       </div>
-
-      <!-- PRODUCTS -->
-      <div id="t-prods" class="adm-tab">
-        <div class="acard">
-          <h4>Agregar producto</h4>
-          <div class="fg">
-            <div class="fl"><label>Categoría (obligatorio)</label><select id="p-cat"></select></div>
-            <div class="fl"><label>Nombre</label><input id="p-name" placeholder="Ej: Hamburguesa XL 120g"></div>
-            <div class="fl"><label>Precio de venta</label><input id="p-price" type="number" placeholder="1500" oninput="calcGanancia('p-price','p-cost','p-ganancia')"></div>
-            <div class="fl">
-              <label>Precio de costo <span style="font-size:.68rem;color:var(--txt3);">(solo vos lo ves)</span></label>
-              <input id="p-cost" type="number" placeholder="900" oninput="calcGanancia('p-price','p-cost','p-ganancia')">
-              <div id="p-ganancia" style="margin-top:6px;font-size:.78rem;font-weight:700;color:var(--green);min-height:18px;"></div>
-            </div>
-            <div class="fl"><label>Precio original (opcional, para tachado)</label><input id="p-orig" type="number" placeholder="1800"></div>
-            <div class="fl"><label>Descripción (opcional)</label><textarea id="p-desc" placeholder="Breve descripción..."></textarea></div>
-            <div class="fl">
-              <label>Imágenes del producto <span style="font-size:.68rem;color:var(--txt3);">(hasta 5 fotos — tocá un slot para agregar)</span></label>
-              <div class="img-upload-grid" id="p-img-grid"></div>
-              <input id="p-img-hidden" type="file" accept="image/*" style="display:none">
-            </div>
-            <div class="fr">
-              <div class="fl"><label>Stock</label><select id="p-stk"><option value="ok">Disponible</option><option value="oos">Agotado</option></select></div>
-            </div>
-            <div class="fl">
-              <label style="display:flex;align-items:center;justify-content:space-between;"><span>Variantes / Opciones</span><button class="btn-s" style="padding:4px 10px;font-size:.72rem;" onclick="addVarGroup()">+ Grupo</button></label>
-              <div id="var-groups" style="display:flex;flex-direction:column;gap:10px;margin-top:6px;"></div>
-            </div>
-          </div>
-          <div class="btn-row">
-            <button class="btn-p" onclick="addProduct()">Agregar</button>
-            <button class="btn-s" onclick="clearProdForm()">Limpiar</button>
-          </div>
-        </div>
-        <div class="acard">
-          <h4>Productos</h4>
-          <div class="plist" id="prod-list"></div>
-          <div class="mini" id="no-prods" style="display:none;">Sin productos aún.</div>
-        </div>
-      </div>
-
-      <!-- STATS -->
-      <div id="t-stats" class="adm-tab">
-        <div class="acard">
-          <h4>📊 Estadísticas de ventas</h4>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-            <button class="btn-s stats-per-btn on" onclick="setStatsPeriod('today',this)">Hoy</button>
-            <button class="btn-s stats-per-btn" onclick="setStatsPeriod('week',this)">Esta semana</button>
-            <button class="btn-s stats-per-btn" onclick="setStatsPeriod('month',this)">Este mes</button>
-            <button class="btn-s stats-per-btn" onclick="setStatsPeriod('custom',this)">Personalizado</button>
-          </div>
-          <div id="stats-custom-dates" style="display:none;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
-            <div class="fl" style="flex:1;min-width:130px;"><label>Desde</label><input type="date" id="stats-from" oninput="renderStats()"></div>
-            <div class="fl" style="flex:1;min-width:130px;"><label>Hasta</label><input type="date" id="stats-to" oninput="renderStats()"></div>
-          </div>
-          <div id="stats-kpis" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;"></div>
-          <div id="stats-top" style="margin-bottom:8px;"></div>
-          <div id="stats-empty" style="display:none;text-align:center;padding:32px;color:var(--txt3);font-size:.85rem;">Sin pedidos en este período.</div>
-        </div>
-      </div>
-
-      <!-- ORDERS -->
-      <div id="t-orders" class="adm-tab">
-        <div class="acard">
-          <h4>Pedidos</h4>
-          <div class="plist" id="order-list"></div>
-          <div class="mini" id="no-orders" style="display:none;">Sin pedidos aún.</div>
-        </div>
-      </div>
+      <div class="btn-row"><button class="btn-p" onclick="savePays()">Guardar pagos</button></div>
     </div>
   </div>
 
+  <!-- CATEGORIES -->
+  <div id="t-cats" class="adm-tab">
+    <div class="acard">
+      <h4>Agregar categoría (banner principal)</h4>
+      <div class="fg">
+        <div class="fr">
+          <div class="fl"><label>Nombre interno</label><input id="cat-name" placeholder="Ej: Perfumes"></div>
+          <div class="fl"><label>Título del banner (opcional)</label><input id="cat-title" placeholder="Vacío = solo imagen"></div>
+        </div>
+        <div class="fl"><label>Imagen del banner</label><input id="cat-img" type="file" accept="image/*"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-p" onclick="addCategory()">Agregar</button>
+        <button class="btn-s" onclick="clearCatForm()">Limpiar</button>
+      </div>
+    </div>
+    <div class="acard">
+      <h4>Categorías</h4>
+      <div class="plist" id="cat-list"></div>
+      <div class="mini" id="no-cats" style="display:none;">Sin categorías aún.</div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div id="t-prods" class="adm-tab">
+    <div class="acard">
+      <h4>Agregar producto</h4>
+      <div class="fg">
+        <div class="fl"><label>Categoría (obligatorio)</label><select id="p-cat"></select></div>
+        <div class="fl"><label>Nombre</label><input id="p-name" placeholder="Ej: Hamburguesa XL 120g"></div>
+        <div class="fl"><label>Precio de venta</label><input id="p-price" type="number" placeholder="1500" oninput="calcGanancia('p-price','p-cost','p-ganancia')"></div>
+        <div class="fl">
+          <label>Precio de costo <span style="font-size:.68rem;color:var(--txt3);">(solo vos lo ves)</span></label>
+          <input id="p-cost" type="number" placeholder="900" oninput="calcGanancia('p-price','p-cost','p-ganancia')">
+          <div id="p-ganancia" style="margin-top:6px;font-size:.78rem;font-weight:700;color:var(--green);min-height:18px;"></div>
+        </div>
+        <div class="fl"><label>Precio original (opcional, para tachado)</label><input id="p-orig" type="number" placeholder="1800"></div>
+        <div class="fl"><label>Descripción (opcional)</label><textarea id="p-desc" placeholder="Breve descripción..."></textarea></div>
+        <div class="fl">
+          <label>Imágenes del producto <span style="font-size:.68rem;color:var(--txt3);">(hasta 5 fotos — tocá un slot para agregar)</span></label>
+          <div class="img-upload-grid" id="p-img-grid"></div>
+          <input id="p-img-hidden" type="file" accept="image/*" style="display:none">
+        </div>
+        <div class="fr">
+          <div class="fl"><label>Stock</label><select id="p-stk"><option value="ok">Disponible</option><option value="oos">Agotado</option></select></div>
+        </div>
+        <div class="fl">
+          <label style="display:flex;align-items:center;justify-content:space-between;"><span>Variantes / Opciones</span><button class="btn-s" style="padding:4px 10px;font-size:.72rem;" onclick="addVarGroup()">+ Grupo</button></label>
+          <div id="var-groups" style="display:flex;flex-direction:column;gap:10px;margin-top:6px;"></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-p" onclick="addProduct()">Agregar</button>
+        <button class="btn-s" onclick="clearProdForm()">Limpiar</button>
+      </div>
+    </div>
+    <div class="acard">
+      <h4>Productos</h4>
+      <div class="plist" id="prod-list"></div>
+      <div class="mini" id="no-prods" style="display:none;">Sin productos aún.</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div id="t-stats" class="adm-tab">
+    <div class="acard">
+      <h4>📊 Estadísticas de ventas</h4>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+        <button class="btn-s stats-per-btn on" onclick="setStatsPeriod('today',this)">Hoy</button>
+        <button class="btn-s stats-per-btn" onclick="setStatsPeriod('week',this)">Esta semana</button>
+        <button class="btn-s stats-per-btn" onclick="setStatsPeriod('month',this)">Este mes</button>
+        <button class="btn-s stats-per-btn" onclick="setStatsPeriod('custom',this)">Personalizado</button>
+      </div>
+      <div id="stats-custom-dates" style="display:none;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+        <div class="fl" style="flex:1;min-width:130px;"><label>Desde</label><input type="date" id="stats-from" oninput="renderStats()"></div>
+        <div class="fl" style="flex:1;min-width:130px;"><label>Hasta</label><input type="date" id="stats-to" oninput="renderStats()"></div>
+      </div>
+      <div id="stats-kpis" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;"></div>
+      <div id="stats-top" style="margin-bottom:8px;"></div>
+      <div id="stats-empty" style="display:none;text-align:center;padding:32px;color:var(--txt3);font-size:.85rem;">Sin pedidos en este período.</div>
+    </div>
+  </div>
+
+  <!-- ORDERS -->
+  <div id="t-orders" class="adm-tab">
+    <div class="acard">
+      <h4>Pedidos</h4>
+      <div class="plist" id="order-list"></div>
+      <div class="mini" id="no-orders" style="display:none;">Sin pedidos aún.</div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
   <!-- CART -->
+
   <div id="c-ov" onclick="closeCart()"></div>
   <div id="c-drw">
     <div class="c-head">
@@ -1055,6 +1067,7 @@
   </div>
 
   <!-- PRODUCT MODAL -->
+
   <div id="mod-ov" onclick="handleModOverlayClick(event)">
     <div id="mod-box">
       <div class="mod-img-wrap" id="mod-img-wrap"></div>
@@ -1063,6 +1076,7 @@
   </div>
 
   <!-- NAV -->
+
   <nav class="fnav">
     <button class="fn on" id="fn-s" onclick="goView('store')"><span class="fn-i">◫</span><span class="fn-l">Tienda</span></button>
     <button class="fn" id="fn-a" onclick="goView('admin')"><span class="fn-i">⊙</span><span class="fn-l">Admin</span></button>
@@ -1072,16 +1086,6 @@
     const SUPA_URL = "https://tqqemmwxulvlwfyjlyya.supabase.co";
     const SUPA_KEY = "sb_publishable_GGQSguoAFktzQdH2zzAjrQ_GyGLp44P";
     const PAYS_DEFAULT = ["Efectivo","Transferencia","Mercado Pago"];
-
-    // ===== MULTI-TENANT: detectar tienda desde URL =====
-    const _urlParams = new URLSearchParams(window.location.search);
-    const STORE_ID = _urlParams.get("tienda") || "luxe";
-
-    // Si no hay tienda en la URL, redirigir a página de inicio
-    if(!_urlParams.get("tienda")){
-      // Modo legacy: seguir funcionando como luxe por defecto
-      console.log("Tienda: luxe (default)");
-    }
 
     async function supa(path, method="GET", body=null){
       const prefer = method==="POST" || method==="PATCH" || method==="DELETE" ? "return=representation" : "";
@@ -1140,10 +1144,18 @@
     const PALETTES = [
       {name:"Nocturna Violeta", bg:"#0d0d0f", header:"#0d0d0f", accent:"#7c5cfc", accent2:"#9b7ffe"},
       {name:"Luxe Dorado",      bg:"#0b0b0c", header:"#0b0b0c", accent:"#d4af37", accent2:"#f2d47a"},
-      {name:"Tori Rojo",        bg:"#0d0d0f", header:"#0d0d0f", accent:"#ef4444", accent2:"#fb7185"},
+      {name:"Rojo Pasión",      bg:"#0d0d0f", header:"#0d0d0f", accent:"#ef4444", accent2:"#fb7185"},
       {name:"Verde Fresh",      bg:"#0b0f0c", header:"#0b0f0c", accent:"#22c55e", accent2:"#86efac"},
       {name:"Azul Pro",         bg:"#0b0d12", header:"#0b0d12", accent:"#3b82f6", accent2:"#60a5fa"},
       {name:"Naranja Venta",    bg:"#0f0c0b", header:"#0f0c0b", accent:"#f97316", accent2:"#fdba74"},
+      {name:"Rosa Glam",        bg:"#0f0b0d", header:"#0f0b0d", accent:"#ec4899", accent2:"#f9a8d4"},
+      {name:"Cyan Tech",        bg:"#0a0f0f", header:"#0a0f0f", accent:"#06b6d4", accent2:"#67e8f9"},
+      {name:"Blanco Minimal",   bg:"#f8f8f8", header:"#ffffff", accent:"#111111", accent2:"#444444"},
+      {name:"Crema Elegante",   bg:"#faf6f0", header:"#ffffff", accent:"#8b6914", accent2:"#c4973a"},
+      {name:"Índigo Oscuro",    bg:"#0f0f1a", header:"#0f0f1a", accent:"#6366f1", accent2:"#a5b4fc"},
+      {name:"Esmeralda",        bg:"#0a0f0e", header:"#0a0f0e", accent:"#10b981", accent2:"#6ee7b7"},
+      {name:"Bordo Premium",    bg:"#0d0809", header:"#0d0809", accent:"#9f1239", accent2:"#fb7185"},
+      {name:"Gris Acero",       bg:"#0f1012", header:"#0f1012", accent:"#64748b", accent2:"#94a3b8"},
     ];
 
     function applyTheme(){
@@ -1182,8 +1194,9 @@
       document.getElementById("th-ac").value = p.accent;
       document.getElementById("th-ac2").value = p.accent2;
       S.config.theme = {bg:p.bg, header:p.header, accent:p.accent, accent2:p.accent2};
+      saveConfigToSupabase();
       applyTheme();
-      toast("🎨 Paleta aplicada");
+      toast("🎨 Paleta guardada");
     }
 
     function saveTheme(){
@@ -1209,6 +1222,7 @@
     // ========= View toggle =========
     function setProductView(v){
       S.productView = v;
+      S.config.defaultView = v;
       // Sync ALL toggle buttons (home + category view)
       ['vtb-list','vtb-list-home'].forEach(id=>{ const el=document.getElementById(id); if(el) el.classList.toggle('on', v==='list'); });
       ['vtb-grid','vtb-grid-home'].forEach(id=>{ const el=document.getElementById(id); if(el) el.classList.toggle('on', v==='grid'); });
@@ -1216,6 +1230,8 @@
       const catGrid = document.getElementById('catGrid');
       if(catGrid) catGrid.classList.toggle('grid-mode', v==='grid');
       if(S.currentCatId) renderCategoryProducts();
+      // Save to Supabase
+      saveConfigToSupabase();
     }
 
     function initViewToggle(){
@@ -1277,16 +1293,12 @@
       showLoader(true);
       try {
         const [cfgRows, catRows, prodRows, orderRows] = await Promise.all([
-          supa("config?store_id=eq."+STORE_ID),
-          supa("categories?store_id=eq."+STORE_ID+"&order=sort_order.asc,id.asc"),
-          supa("products?store_id=eq."+STORE_ID+"&order=sort_order.asc,id.asc"),
-          supa("orders?store_id=eq."+STORE_ID+"&order=id.desc&limit=200")
+          supa("config?id=eq.main"),
+          supa("categories?order=sort_order.asc,id.asc"),
+          supa("products?order=sort_order.asc,id.asc"),
+          supa("orders?order=id.desc&limit=200")
         ]);
         S.config = dbRowToConfig(cfgRows && cfgRows[0]);
-        // Si es tienda nueva sin config, crearla
-        if(!cfgRows || !cfgRows[0]){
-          await supa("config", "POST", {id: STORE_ID+"-main", store_id: STORE_ID, store_name: "Mi Tienda"});
-        }
         S.cats = (catRows||[]).map(dbRowToCat);
         S.prods = (prodRows||[]).map(dbRowToProd);
         S.orders = (orderRows||[]).map(dbRowToOrder);
@@ -1389,7 +1401,6 @@
     async function saveConfigToSupabase(){
       const row = {
         id: "main",
-        store_id: STORE_ID,
         store_name: S.config.storeName,
         currency: S.config.currency,
         slogan: S.config.slogan,
@@ -1403,7 +1414,7 @@
         schedule: S.config.schedule||null,
         default_view: S.config.defaultView||"list"
       };
-      await supa("config?store_id=eq."+STORE_ID, "PATCH", row);
+      await supa("config?id=eq.main", "PATCH", row);
     }
 
     async function savePays(){
@@ -1767,7 +1778,7 @@
       };
       supa("orders", "POST", {
         customer:order.customer, items:order.items, items_data:order.itemsData,
-        total:order.total, delivery:order.delivery, payment:order.payment, status:"nuevo", store_id:STORE_ID
+        total:order.total, delivery:order.delivery, payment:order.payment, status:"nuevo"
       }).then(result => {
         if(result && result[0]){ order.id = result[0].id; order.date = new Date(result[0].created_at).toLocaleString("es-AR"); }
         S.orders.unshift(order);
@@ -1820,7 +1831,7 @@
       if(!name){ toast("⚠ Poné nombre"); return; }
       if(S.cats.some(c=>c.name.toLowerCase()===name.toLowerCase())){ toast("⚠ Esa categoría ya existe"); return; }
       const saveCat = async (imgData)=>{
-        const result = await supa("categories", "POST", { name, title: title||"", img: imgData||"", sort_order: S.cats.length, store_id: STORE_ID });
+        const result = await supa("categories", "POST", { name, title: title||"", img: imgData||"", sort_order: S.cats.length });
         if(result && result[0]){
           S.cats.push(dbRowToCat(result[0]));
           clearCatForm();
@@ -2006,10 +2017,10 @@
       const saveProd=async()=>{
         const cleanVars=varGroups.filter(g=>g.name.trim()).map(g=>({...g,opts:g.opts.filter(o=>o.name.trim())}));
         const mainImg = imgs[0]||"";
-        let result=await supa("products","POST",{cat_id:catId,name,price,cost:cost>0?cost:0,orig:orig>0?orig:0,description:desc,img:mainImg,images:imgs,stock,variants:cleanVars,sort_order:S.prods.length,store_id:STORE_ID});
+        let result=await supa("products","POST",{cat_id:catId,name,price,cost:cost>0?cost:0,orig:orig>0?orig:0,description:desc,img:mainImg,images:imgs,stock,variants:cleanVars,sort_order:S.prods.length});
         if(!result||!result[0]){
           // Retry without images column in case it doesn't exist yet
-          result=await supa("products","POST",{cat_id:catId,name,price,cost:cost>0?cost:0,orig:orig>0?orig:0,description:desc,img:mainImg,stock,variants:cleanVars,sort_order:S.prods.length,store_id:STORE_ID});
+          result=await supa("products","POST",{cat_id:catId,name,price,cost:cost>0?cost:0,orig:orig>0?orig:0,description:desc,img:mainImg,stock,variants:cleanVars,sort_order:S.prods.length});
         }
         if(result&&result[0]){
           const newProd = dbRowToProd(result[0]);
@@ -2083,8 +2094,15 @@
 
     // ========= Share =========
     function shareStore(){
-      const slug=(S.config.storeName||"mi-tienda").toLowerCase().replace(/\s+/g,'-');
-      navigator.clipboard?.writeText("https://vendeya.app/"+slug).then(()=>toast("✔ Link copiado"));
+      const url = window.location.href.split('?')[0].split('#')[0];
+      if(navigator.share){
+        navigator.share({ title: S.config.storeName||"Mi Tienda", url: url })
+          .catch(()=>{});
+      } else if(navigator.clipboard){
+        navigator.clipboard.writeText(url).then(()=>toast("✔ Link copiado!"));
+      } else {
+        prompt("Copiá este link:", url);
+      }
     }
 
     // ========= Edit Product Modal =========
@@ -2113,526 +2131,530 @@
             </div>
             <div class="fl"><label>Precio original (tachado)</label><input id="ep-orig" type="number" placeholder="1800"></div>
             <div class="fl"><label>Descripción</label><textarea id="ep-desc" placeholder="Descripción..."></textarea></div>
-            <div class="fl"><label>Stock</label><select id="ep-stk"><option value="ok">Disponible</option><option value="oos">Agotado</option></select></div>
-            <div class="fl">
-              <label>Imágenes <span style="font-size:.68rem;color:var(--txt3);">(hasta 5 — tocá + para agregar)</span></label>
-              <div class="img-upload-grid" id="ep-img-grid"></div>
-              <input id="ep-img" type="file" accept="image/*" multiple style="display:none">
-            </div>
-          </div>
-          <div class="btn-row" style="margin-top:1rem;">
-            <button class="btn-p" onclick="saveEditProd()">Guardar cambios</button>
-            <button class="btn-s" onclick="closeEditProd()">Cancelar</button>
-          </div>
-        </div>`;
-        document.body.appendChild(m);
-      }
-      const catSel=document.getElementById("ep-cat");
-      catSel.innerHTML=S.cats.map(c=>`<option value="${c.id}" ${c.id===p.catId?'selected':''}>${esc(c.name)}</option>`).join('');
-      document.getElementById("ep-name").value=p.name||'';
-      document.getElementById("ep-price").value=p.price||'';
-      document.getElementById("ep-cost").value=p.cost||'';
-      calcGanancia('ep-price','ep-cost','ep-ganancia');
-      document.getElementById("ep-orig").value=p.orig||'';
-      document.getElementById("ep-desc").value=p.desc||'';
-      document.getElementById("ep-stk").value=p.stock||'ok';
-      S._editProdRmImg=false;
-      S._editProdImages = (p.images && p.images.length) ? [...p.images] : (p.img ? [p.img] : []);
-      // Rebuild grid fresh each time modal opens
-      setTimeout(()=>renderProdImageGrid("ep-img-grid", S._editProdImages, 5), 50);
-      m.style.display="flex";
-      document.body.style.overflow="hidden";
-    }
-    function removeEditProdImg(){ S._editProdRmImg=true; }
-    function closeEditProd(){ const m=document.getElementById("prod-edit-ov"); if(m) m.remove(); document.body.style.overflow=""; }
-    function saveEditProd(){
-      const id=S._editProdId, idx=S.prods.findIndex(x=>x.id===id);
-      if(idx===-1) return;
-      const catId=Number(document.getElementById("ep-cat").value);
-      const name=document.getElementById("ep-name").value.trim();
-      const price=Number(document.getElementById("ep-price").value);
-      const cost=Number(document.getElementById("ep-cost").value||0);
-      const orig=Number(document.getElementById("ep-orig").value||0);
-      const desc=document.getElementById("ep-desc").value.trim();
-      const stock=document.getElementById("ep-stk").value;
-      if(!name){ toast("⚠ Poné un nombre"); return; }
-      if(!price||isNaN(price)){ toast("⚠ Poné un precio"); return; }
-      const finalize=async(imgData, imgsArr)=>{
-        const row={cat_id:catId||S.prods[idx].catId,name,price,cost:cost>0?cost:0,orig:orig>0?orig:0,description:desc,stock,img:imgData||"",images:imgsArr||[]};
-        let patchOk = await supa("products?id=eq."+S.prods[idx].id,"PATCH",row);
-        if(!patchOk){
-          const rowNoImg={cat_id:row.cat_id,name,price,cost:row.cost,orig:row.orig,description:desc,stock,img:imgData||""};
-          await supa("products?id=eq."+S.prods[idx].id,"PATCH",rowNoImg);
-        }
-        const updated={...row,id:S.prods[idx].id,cat_id:row.cat_id,description:row.description,variants:S.prods[idx].variants||[]};
-        S.prods[idx]={...S.prods[idx],...dbRowToProd(updated)};
-        S.prods[idx].images = imgsArr||[];
-        renderProductsAdmin(); renderHomeCats(); if(S.currentCatId) renderCategoryProducts(); closeEditProd(); toast("✔ Producto actualizado");
-      };
-      const editImgs = S._editProdImages || [];
-      finalize(editImgs[0]||"", editImgs);
-    }
 
-    // ========= Variantes Admin =========
-    let varGroups = [];
-    function addVarGroup(){ varGroups.push({id:Date.now(),name:'',type:'multi',required:false,min:1,max:1,opts:[]}); renderVarGroups(); }
-    function removeVarGroup(id){ varGroups=varGroups.filter(g=>g.id!==id); renderVarGroups(); }
-    function addVarOpt(gid){ const g=varGroups.find(x=>x.id===gid); if(!g) return; g.opts.push({id:Date.now(),name:'',price:0}); renderVarGroups(); }
-    function removeVarOpt(gid,oid){ const g=varGroups.find(x=>x.id===gid); if(!g) return; g.opts=g.opts.filter(o=>o.id!==oid); renderVarGroups(); }
-    function renderVarGroups(){
-      const wrap=document.getElementById('var-groups');
-      if(!wrap) return;
-      if(!varGroups.length){ wrap.innerHTML='<div style="font-size:.75rem;color:var(--txt3);">Sin variantes. Tocá "+ Grupo" para agregar (ej: Sabores, Talle, Extras).</div>'; return; }
-      wrap.innerHTML=varGroups.map(g=>`<div class="vg" id="vg-${g.id}">
-        <div class="vg-head">
-          <input type="text" placeholder="Nombre del grupo" value="${esc(g.name)}" oninput="varGroups.find(x=>x.id===${g.id}).name=this.value">
-          <select onchange="varGroups.find(x=>x.id===${g.id}).type=this.value;renderVarGroups()">
-            <option value="multi" ${g.type==='multi'?'selected':''}>Múltiple</option>
-            <option value="single" ${g.type==='single'?'selected':''}>Única</option>
-          </select>
-          <select onchange="varGroups.find(x=>x.id===${g.id}).required=this.value==='1'">
-            <option value="1" ${g.required?'selected':''}>Obligatorio</option>
-            <option value="0" ${!g.required?'selected':''}>Opcional</option>
-          </select>
-          <button class="vg-remove" onclick="removeVarGroup(${g.id})">✕ Quitar</button>
+```
+        <div class="fl"><label>Stock</label><select id="ep-stk"><option value="ok">Disponible</option><option value="oos">Agotado</option></select></div>
+        <div class="fl">
+          <label>Imágenes <span style="font-size:.68rem;color:var(--txt3);">(hasta 5 — tocá + para agregar)</span></label>
+          <div class="img-upload-grid" id="ep-img-grid"></div>
+          <input id="ep-img" type="file" accept="image/*" multiple style="display:none">
         </div>
-        ${g.type==='multi'?`<div class="vg-minmax"><span>Mín:</span><input type="number" min="0" max="20" value="${g.min}" style="width:52px" oninput="varGroups.find(x=>x.id===${g.id}).min=parseInt(this.value)||0"><span>Máx:</span><input type="number" min="1" max="20" value="${g.max}" style="width:52px" oninput="varGroups.find(x=>x.id===${g.id}).max=parseInt(this.value)||1"></div>`:''}
-        <div class="vg-opts" style="margin-top:10px;">
-          ${g.opts.map(o=>`<div class="vg-opt">
-            <input type="text" placeholder="Opción" value="${esc(o.name)}" oninput="varGroups.find(x=>x.id===${g.id}).opts.find(o=>o.id===${o.id}).name=this.value">
-            <input type="number" placeholder="+precio" min="0" value="${o.price||''}" oninput="varGroups.find(x=>x.id===${g.id}).opts.find(o=>o.id===${o.id}).price=parseFloat(this.value)||0">
-            <button onclick="removeVarOpt(${g.id},${o.id})">✕</button>
-          </div>`).join('')}
-          <button class="vg-add-opt" onclick="addVarOpt(${g.id})">+ Agregar opción</button>
-        </div>
-      </div>`).join('');
+      </div>
+      <div class="btn-row" style="margin-top:1rem;">
+        <button class="btn-p" onclick="saveEditProd()">Guardar cambios</button>
+        <button class="btn-s" onclick="closeEditProd()">Cancelar</button>
+      </div>
+    </div>`;
+    document.body.appendChild(m);
+  }
+  const catSel=document.getElementById("ep-cat");
+  catSel.innerHTML=S.cats.map(c=>`<option value="${c.id}" ${c.id===p.catId?'selected':''}>${esc(c.name)}</option>`).join('');
+  document.getElementById("ep-name").value=p.name||'';
+  document.getElementById("ep-price").value=p.price||'';
+  document.getElementById("ep-cost").value=p.cost||'';
+  calcGanancia('ep-price','ep-cost','ep-ganancia');
+  document.getElementById("ep-orig").value=p.orig||'';
+  document.getElementById("ep-desc").value=p.desc||'';
+  document.getElementById("ep-stk").value=p.stock||'ok';
+  S._editProdRmImg=false;
+  S._editProdImages = (p.images && p.images.length) ? [...p.images] : (p.img ? [p.img] : []);
+  // Rebuild grid fresh each time modal opens
+  setTimeout(()=>renderProdImageGrid("ep-img-grid", S._editProdImages, 5), 50);
+  m.style.display="flex";
+  document.body.style.overflow="hidden";
+}
+function removeEditProdImg(){ S._editProdRmImg=true; }
+function closeEditProd(){ const m=document.getElementById("prod-edit-ov"); if(m) m.remove(); document.body.style.overflow=""; }
+function saveEditProd(){
+  const id=S._editProdId, idx=S.prods.findIndex(x=>x.id===id);
+  if(idx===-1) return;
+  const catId=Number(document.getElementById("ep-cat").value);
+  const name=document.getElementById("ep-name").value.trim();
+  const price=Number(document.getElementById("ep-price").value);
+  const cost=Number(document.getElementById("ep-cost").value||0);
+  const orig=Number(document.getElementById("ep-orig").value||0);
+  const desc=document.getElementById("ep-desc").value.trim();
+  const stock=document.getElementById("ep-stk").value;
+  if(!name){ toast("⚠ Poné un nombre"); return; }
+  if(!price||isNaN(price)){ toast("⚠ Poné un precio"); return; }
+  const finalize=async(imgData, imgsArr)=>{
+    const row={cat_id:catId||S.prods[idx].catId,name,price,cost:cost>0?cost:0,orig:orig>0?orig:0,description:desc,stock,img:imgData||"",images:imgsArr||[]};
+    let patchOk = await supa("products?id=eq."+S.prods[idx].id,"PATCH",row);
+    if(!patchOk){
+      const rowNoImg={cat_id:row.cat_id,name,price,cost:row.cost,orig:row.orig,description:desc,stock,img:imgData||""};
+      await supa("products?id=eq."+S.prods[idx].id,"PATCH",rowNoImg);
     }
+    const updated={...row,id:S.prods[idx].id,cat_id:row.cat_id,description:row.description,variants:S.prods[idx].variants||[]};
+    S.prods[idx]={...S.prods[idx],...dbRowToProd(updated)};
+    S.prods[idx].images = imgsArr||[];
+    renderProductsAdmin(); renderHomeCats(); if(S.currentCatId) renderCategoryProducts(); closeEditProd(); toast("✔ Producto actualizado");
+  };
+  const editImgs = S._editProdImages || [];
+  finalize(editImgs[0]||"", editImgs);
+}
 
-    // ========= Variantes Modal (cliente) =========
-    let modSelections = {};
-    function renderModalVariants(p){
-      if(!p.variants||!p.variants.length) return '';
-      modSelections={};
-      return p.variants.map(g=>{
-        modSelections[g.id]=[];
-        const isMulti=g.type==='multi';
-        return `<div class="mod-vg">
-          <div class="mod-vg-title">${esc(g.name)}${g.required?'<span class="mod-vg-req">Obligatorio</span>':''}${isMulti?`<span style="font-size:.65rem;color:var(--txt3);font-weight:600;">Elegí ${g.min===g.max?g.min:`${g.min} a ${g.max}`}</span>`:''}</div>
-          <div class="mod-vg-opts ${isMulti?'mod-vg-sq':''}">
-            ${g.opts.map(o=>`<div class="mod-vg-opt" id="vopt-${g.id}-${o.id}" onclick="toggleVarOpt(${p.id},${g.id},${o.id},'${isMulti?'multi':'single'}',${g.max||1})">
-              <div class="mod-vg-opt-check"></div>
-              <span class="mod-vg-opt-name">${esc(o.name)}</span>
-              ${o.price>0?`<span class="mod-vg-opt-price">+${fmt(o.price)}</span>`:''}
-            </div>`).join('')}
-          </div>
-        </div>`;
-      }).join('');
-    }
+// ========= Variantes Admin =========
+let varGroups = [];
+function addVarGroup(){ varGroups.push({id:Date.now(),name:'',type:'multi',required:false,min:1,max:1,opts:[]}); renderVarGroups(); }
+function removeVarGroup(id){ varGroups=varGroups.filter(g=>g.id!==id); renderVarGroups(); }
+function addVarOpt(gid){ const g=varGroups.find(x=>x.id===gid); if(!g) return; g.opts.push({id:Date.now(),name:'',price:0}); renderVarGroups(); }
+function removeVarOpt(gid,oid){ const g=varGroups.find(x=>x.id===gid); if(!g) return; g.opts=g.opts.filter(o=>o.id!==oid); renderVarGroups(); }
+function renderVarGroups(){
+  const wrap=document.getElementById('var-groups');
+  if(!wrap) return;
+  if(!varGroups.length){ wrap.innerHTML='<div style="font-size:.75rem;color:var(--txt3);">Sin variantes. Tocá "+ Grupo" para agregar (ej: Sabores, Talle, Extras).</div>'; return; }
+  wrap.innerHTML=varGroups.map(g=>`<div class="vg" id="vg-${g.id}">
+    <div class="vg-head">
+      <input type="text" placeholder="Nombre del grupo" value="${esc(g.name)}" oninput="varGroups.find(x=>x.id===${g.id}).name=this.value">
+      <select onchange="varGroups.find(x=>x.id===${g.id}).type=this.value;renderVarGroups()">
+        <option value="multi" ${g.type==='multi'?'selected':''}>Múltiple</option>
+        <option value="single" ${g.type==='single'?'selected':''}>Única</option>
+      </select>
+      <select onchange="varGroups.find(x=>x.id===${g.id}).required=this.value==='1'">
+        <option value="1" ${g.required?'selected':''}>Obligatorio</option>
+        <option value="0" ${!g.required?'selected':''}>Opcional</option>
+      </select>
+      <button class="vg-remove" onclick="removeVarGroup(${g.id})">✕ Quitar</button>
+    </div>
+    ${g.type==='multi'?`<div class="vg-minmax"><span>Mín:</span><input type="number" min="0" max="20" value="${g.min}" style="width:52px" oninput="varGroups.find(x=>x.id===${g.id}).min=parseInt(this.value)||0"><span>Máx:</span><input type="number" min="1" max="20" value="${g.max}" style="width:52px" oninput="varGroups.find(x=>x.id===${g.id}).max=parseInt(this.value)||1"></div>`:''}
+    <div class="vg-opts" style="margin-top:10px;">
+      ${g.opts.map(o=>`<div class="vg-opt">
+        <input type="text" placeholder="Opción" value="${esc(o.name)}" oninput="varGroups.find(x=>x.id===${g.id}).opts.find(o=>o.id===${o.id}).name=this.value">
+        <input type="number" placeholder="+precio" min="0" value="${o.price||''}" oninput="varGroups.find(x=>x.id===${g.id}).opts.find(o=>o.id===${o.id}).price=parseFloat(this.value)||0">
+        <button onclick="removeVarOpt(${g.id},${o.id})">✕</button>
+      </div>`).join('')}
+      <button class="vg-add-opt" onclick="addVarOpt(${g.id})">+ Agregar opción</button>
+    </div>
+  </div>`).join('');
+}
 
-    function toggleVarOpt(prodId,groupId,optId,type,max){
-      const p=S.prods.find(x=>x.id===prodId); if(!p) return;
-      const g=p.variants.find(x=>x.id===groupId); if(!g) return;
-      if(!modSelections[groupId]) modSelections[groupId]=[];
-      const sel=modSelections[groupId], idx=sel.indexOf(optId);
-      if(type==='single'){ modSelections[groupId]=idx>=0?[]:[optId]; }
-      else {
-        if(idx>=0){ modSelections[groupId]=sel.filter(x=>x!==optId); }
-        else { if(sel.length>=max){ toast(`⚠ Máximo ${max} opciones`); return; } modSelections[groupId]=[...sel,optId]; }
-      }
-      g.opts.forEach(o=>{ const el=document.getElementById('vopt-'+groupId+'-'+o.id); if(el) el.classList.toggle('selected',modSelections[groupId].includes(o.id)); });
-      updateModPrice(prodId);
-    }
+// ========= Variantes Modal (cliente) =========
+let modSelections = {};
+function renderModalVariants(p){
+  if(!p.variants||!p.variants.length) return '';
+  modSelections={};
+  return p.variants.map(g=>{
+    modSelections[g.id]=[];
+    const isMulti=g.type==='multi';
+    return `<div class="mod-vg">
+      <div class="mod-vg-title">${esc(g.name)}${g.required?'<span class="mod-vg-req">Obligatorio</span>':''}${isMulti?`<span style="font-size:.65rem;color:var(--txt3);font-weight:600;">Elegí ${g.min===g.max?g.min:`${g.min} a ${g.max}`}</span>`:''}</div>
+      <div class="mod-vg-opts ${isMulti?'mod-vg-sq':''}">
+        ${g.opts.map(o=>`<div class="mod-vg-opt" id="vopt-${g.id}-${o.id}" onclick="toggleVarOpt(${p.id},${g.id},${o.id},'${isMulti?'multi':'single'}',${g.max||1})">
+          <div class="mod-vg-opt-check"></div>
+          <span class="mod-vg-opt-name">${esc(o.name)}</span>
+          ${o.price>0?`<span class="mod-vg-opt-price">+${fmt(o.price)}</span>`:''}
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
 
-    function getVariantExtra(p){
-      if(!p.variants||!p.variants.length) return 0;
-      let extra=0;
-      p.variants.forEach(g=>{ (modSelections[g.id]||[]).forEach(oid=>{ const o=g.opts.find(x=>x.id===oid); if(o) extra+=(o.price||0); }); });
-      return extra;
-    }
+function toggleVarOpt(prodId,groupId,optId,type,max){
+  const p=S.prods.find(x=>x.id===prodId); if(!p) return;
+  const g=p.variants.find(x=>x.id===groupId); if(!g) return;
+  if(!modSelections[groupId]) modSelections[groupId]=[];
+  const sel=modSelections[groupId], idx=sel.indexOf(optId);
+  if(type==='single'){ modSelections[groupId]=idx>=0?[]:[optId]; }
+  else {
+    if(idx>=0){ modSelections[groupId]=sel.filter(x=>x!==optId); }
+    else { if(sel.length>=max){ toast(`⚠ Máximo ${max} opciones`); return; } modSelections[groupId]=[...sel,optId]; }
+  }
+  g.opts.forEach(o=>{ const el=document.getElementById('vopt-'+groupId+'-'+o.id); if(el) el.classList.toggle('selected',modSelections[groupId].includes(o.id)); });
+  updateModPrice(prodId);
+}
 
-    function updateModPrice(prodId){
-      const p=S.prods.find(x=>x.id===prodId); if(!p) return;
-      const btn=document.querySelector('.mod-add');
-      if(btn) btn.textContent='Agregar · '+fmt((p.price+getVariantExtra(p))*S.modQty);
-    }
+function getVariantExtra(p){
+  if(!p.variants||!p.variants.length) return 0;
+  let extra=0;
+  p.variants.forEach(g=>{ (modSelections[g.id]||[]).forEach(oid=>{ const o=g.opts.find(x=>x.id===oid); if(o) extra+=(o.price||0); }); });
+  return extra;
+}
 
-    function validateVariants(p){
-      if(!p.variants||!p.variants.length) return true;
-      for(const g of p.variants){
-        if(g.required&&(modSelections[g.id]||[]).length<(g.min||1)){ toast('⚠ Elegí al menos '+(g.min||1)+' opción en "'+g.name+'"'); return false; }
-      }
-      return true;
-    }
+function updateModPrice(prodId){
+  const p=S.prods.find(x=>x.id===prodId); if(!p) return;
+  const btn=document.querySelector('.mod-add');
+  if(btn) btn.textContent='Agregar · '+fmt((p.price+getVariantExtra(p))*S.modQty);
+}
 
-    function getVariantLabel(p){
-      if(!p.variants||!p.variants.length) return '';
-      const parts=[];
-      p.variants.forEach(g=>{ const sel=(modSelections[g.id]||[]); if(sel.length){ const names=sel.map(oid=>{ const o=g.opts.find(x=>x.id===oid); return o?o.name:''; }).filter(Boolean); if(names.length) parts.push(g.name+': '+names.join(', ')); } });
-      return parts.join(' | ');
-    }
+function validateVariants(p){
+  if(!p.variants||!p.variants.length) return true;
+  for(const g of p.variants){
+    if(g.required&&(modSelections[g.id]||[]).length<(g.min||1)){ toast('⚠ Elegí al menos '+(g.min||1)+' opción en "'+g.name+'"'); return false; }
+  }
+  return true;
+}
 
-    function calcGanancia(priceId,costId,outId){
-      const price=parseFloat(document.getElementById(priceId)?.value)||0;
-      const cost=parseFloat(document.getElementById(costId)?.value)||0;
-      const out=document.getElementById(outId);
-      if(!out) return;
-      if(!price||!cost){ out.innerHTML=''; return; }
-      const gan=price-cost, pct=Math.round((gan/price)*100);
-      if(gan<0){ out.style.color='var(--red)'; out.innerHTML='⚠ Estás vendiendo a pérdida'; }
-      else { out.style.color='var(--green)'; out.innerHTML='💰 Ganás '+(window.S?fmt(gan):'$'+gan.toLocaleString('es-AR'))+' por unidad · <strong>'+pct+'%</strong> de margen'; }
-    }
+function getVariantLabel(p){
+  if(!p.variants||!p.variants.length) return '';
+  const parts=[];
+  p.variants.forEach(g=>{ const sel=(modSelections[g.id]||[]); if(sel.length){ const names=sel.map(oid=>{ const o=g.opts.find(x=>x.id===oid); return o?o.name:''; }).filter(Boolean); if(names.length) parts.push(g.name+': '+names.join(', ')); } });
+  return parts.join(' | ');
+}
 
-    // ========= Stats =========
-    let statsPeriod='today';
-    function setStatsPeriod(period,btn){
-      statsPeriod=period;
-      document.querySelectorAll('.stats-per-btn').forEach(b=>b.classList.remove('on'));
-      if(btn) btn.classList.add('on');
-      const custom=document.getElementById('stats-custom-dates');
-      if(custom) custom.style.display=period==='custom'?'flex':'none';
-      renderStats();
-    }
-    function getStatsDates(){
-      const now=new Date(); let from,to;
-      if(statsPeriod==='today'){ from=new Date(now.getFullYear(),now.getMonth(),now.getDate()); to=new Date(now.getFullYear(),now.getMonth(),now.getDate(),23,59,59); }
-      else if(statsPeriod==='week'){ const day=now.getDay()||7; from=new Date(now); from.setDate(now.getDate()-day+1); from.setHours(0,0,0,0); to=new Date(from); to.setDate(from.getDate()+6); to.setHours(23,59,59,999); }
-      else if(statsPeriod==='month'){ from=new Date(now.getFullYear(),now.getMonth(),1); to=new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59); }
-      else { from=document.getElementById('stats-from')?.value?new Date(document.getElementById('stats-from').value+'T00:00:00'):new Date(0); to=document.getElementById('stats-to')?.value?new Date(document.getElementById('stats-to').value+'T23:59:59'):new Date(); }
-      return {from,to};
-    }
-    function parseOrderDate(d){ if(!d) return null; const p=d.split(' '), dp=p[0].split('/'); if(dp.length<3) return null; const tp=p[1]?p[1].split(':'):['0','0']; return new Date(parseInt(dp[2]),parseInt(dp[1])-1,parseInt(dp[0]),parseInt(tp[0]||0),parseInt(tp[1]||0)); }
-    function renderStats(){
-      const {from,to}=getStatsDates();
-      const kpisEl=document.getElementById('stats-kpis'), topEl=document.getElementById('stats-top'), emptyEl=document.getElementById('stats-empty');
-      if(!kpisEl) return;
-      const orders=S.orders.filter(o=>{ const d=parseOrderDate(o.date); return d&&d>=from&&d<=to; });
-      if(!orders.length){ kpisEl.innerHTML=''; topEl.innerHTML=''; emptyEl.style.display='block'; return; }
-      emptyEl.style.display='none';
-      const totalVentas=orders.reduce((a,o)=>a+(o.total||0),0), cantPedidos=orders.length;
-      let ganancia=0, hasCosting=false;
-      orders.forEach(o=>{ if(o.itemsData?.length) o.itemsData.forEach(it=>{ const prod=S.prods.find(p=>p.id===it.id); if(prod&&prod.cost>0){ hasCosting=true; ganancia+=(prod.price-prod.cost)*it.qty; } }); });
-      kpisEl.innerHTML=`
-        <div class="stat-kpi"><div class="stat-kpi-val">${fmt(totalVentas)}</div><div class="stat-kpi-lbl">Total vendido</div></div>
-        <div class="stat-kpi"><div class="stat-kpi-val">${cantPedidos}</div><div class="stat-kpi-lbl">Pedidos</div></div>
-        <div class="stat-kpi"><div class="stat-kpi-val">${fmt(Math.round(totalVentas/cantPedidos))}</div><div class="stat-kpi-lbl">Ticket promedio</div></div>
-        <div class="stat-kpi"><div class="stat-kpi-val" style="color:${hasCosting?'var(--green)':'var(--txt2)'}">${hasCosting?fmt(ganancia):'—'}</div><div class="stat-kpi-lbl">Ganancia neta</div>${!hasCosting?'<div class="stat-kpi-sub" style="color:var(--txt3)">Cargá precios de costo</div>':''}</div>`;
-      const prodCount={}, prodRev={};
-      orders.forEach(o=>{ if(o.itemsData?.length) o.itemsData.forEach(it=>{ const k=it.name||it.id; prodCount[k]=(prodCount[k]||0)+(it.qty||1); prodRev[k]=(prodRev[k]||0)+((it.price||0)*(it.qty||1)); }); });
-      const sorted=Object.entries(prodCount).sort((a,b)=>b[1]-a[1]).slice(0,5), maxQty=sorted[0]?.[1]||1;
-      topEl.innerHTML=sorted.length?`<div style="font-size:.75rem;font-weight:800;color:var(--txt2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">🏆 Productos más vendidos</div>${sorted.map(([name,qty])=>`<div class="stat-prod-row"><span class="stat-prod-name">${esc(name)}</span><div style="flex:1;display:flex;flex-direction:column;gap:3px;"><div class="stat-prod-bar-wrap"><div class="stat-prod-bar" style="width:${Math.round((qty/maxQty)*100)}%"></div></div></div><span class="stat-prod-qty">${qty} ud.</span><span class="stat-prod-rev">${fmt(prodRev[name]||0)}</span></div>`).join('')}`:'';
-    }
+function calcGanancia(priceId,costId,outId){
+  const price=parseFloat(document.getElementById(priceId)?.value)||0;
+  const cost=parseFloat(document.getElementById(costId)?.value)||0;
+  const out=document.getElementById(outId);
+  if(!out) return;
+  if(!price||!cost){ out.innerHTML=''; return; }
+  const gan=price-cost, pct=Math.round((gan/price)*100);
+  if(gan<0){ out.style.color='var(--red)'; out.innerHTML='⚠ Estás vendiendo a pérdida'; }
+  else { out.style.color='var(--green)'; out.innerHTML='💰 Ganás '+(window.S?fmt(gan):'$'+gan.toLocaleString('es-AR'))+' por unidad · <strong>'+pct+'%</strong> de margen'; }
+}
 
-    // ========= Horario =========
-    const DAYS=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
-    const DEFAULT_SCHEDULE=[{open:false,from:"09:00",to:"18:00"},{open:true,from:"09:00",to:"20:00"},{open:true,from:"09:00",to:"20:00"},{open:true,from:"09:00",to:"20:00"},{open:true,from:"09:00",to:"20:00"},{open:true,from:"09:00",to:"20:00"},{open:true,from:"09:00",to:"14:00"}];
-    function toggleScheduleMode(){ const val=document.getElementById("c-status")?.value, wrap=document.getElementById("schedule-wrap"); if(wrap) wrap.style.display=val==="schedule"?"block":"none"; }
-    function renderScheduleDays(){
-      const wrap=document.getElementById("schedule-days"); if(!wrap) return;
-      const sched=S.config.schedule||DEFAULT_SCHEDULE;
-      wrap.innerHTML=DAYS.map((d,i)=>{ const day=sched[i]||DEFAULT_SCHEDULE[i]; return `<div class="day-row"><span class="day-name">${d}</span><label class="day-toggle"><input type="checkbox" id="day-open-${i}" ${day.open?'checked':''} onchange="updateDayOpen(${i})"><span class="day-toggle-slider"></span></label><div class="day-times" id="day-times-${i}" style="${day.open?'':'opacity:.35;pointer-events:none;'}"><input type="time" id="day-from-${i}" value="${day.from||'09:00'}"><span style="font-size:.75rem;color:var(--txt3);">a</span><input type="time" id="day-to-${i}" value="${day.to||'20:00'}"></div>${!day.open?'<span class="day-closed-lbl">Cerrado</span>':''}</div>`; }).join('');
-    }
-    function updateDayOpen(i){ const chk=document.getElementById('day-open-'+i), times=document.getElementById('day-times-'+i); if(times) times.style.cssText=chk.checked?'':'opacity:.35;pointer-events:none;'; renderScheduleDays(); }
-    function getScheduleFromForm(){ return DAYS.map((_,i)=>({open:document.getElementById('day-open-'+i)?.checked||false,from:document.getElementById('day-from-'+i)?.value||'09:00',to:document.getElementById('day-to-'+i)?.value||'20:00'})); }
-    function isOpenNow(){
-      const status=S.config.status||"always"; if(status==="always") return true; if(status!=="schedule") return true;
-      const sched=S.config.schedule||DEFAULT_SCHEDULE, now=new Date(), dayIdx=now.getDay(), day=sched[dayIdx];
-      if(!day||!day.open) return false;
-      const [fh,fm]=(day.from||"09:00").split(":").map(Number), [th,tm]=(day.to||"20:00").split(":").map(Number);
-      const nowMin=now.getHours()*60+now.getMinutes();
-      return nowMin>=(fh*60+fm)&&nowMin<(th*60+tm);
-    }
-    async function saveStatus(){
-      S.config.status=document.getElementById("c-status").value;
-      S.config.closedMsg=document.getElementById("c-closed-msg").value.trim();
-      if(S.config.status==="schedule") S.config.schedule=getScheduleFromForm();
-      await saveConfigToSupabase(); applyStatus(); toast("✔ Horario guardado");
-    }
-    function getNextOpenText(){
-      const sched=S.config.schedule||DEFAULT_SCHEDULE, now=new Date(), todayIdx=now.getDay(), nowMin=now.getHours()*60+now.getMinutes();
-      const today=sched[todayIdx];
-      if(today&&today.open){ const [fh,fm]=(today.from||"09:00").split(":").map(Number); if(nowMin<fh*60+fm) return "Abrimos hoy a las "+today.from+"hs"; }
-      for(let i=1;i<=7;i++){ const idx=(todayIdx+i)%7, day=sched[idx]; if(day&&day.open) return "Abrimos "+(i===1?"mañana":DAYS[idx])+" a las "+(day.from||"09:00")+"hs"; }
-      return "Próximamente";
-    }
-    function applyStatus(){
-      const open=isOpenNow(), customMsg=S.config.closedMsg||"";
-      const banner=document.getElementById("closed-banner");
-      if(!open){
-        if(banner) banner.classList.add("show");
-        const nextText=S.config.status==="schedule"?getNextOpenText():"";
-        document.getElementById("closed-banner-title").textContent="En este momento estamos cerrados";
-        const bm=document.getElementById("closed-banner-msg");
-        if(bm) bm.textContent=customMsg||(nextText||"Podés ver el catálogo pero no realizar pedidos.");
-        const waBtn=document.getElementById("wa-btn"); if(waBtn) waBtn.classList.add("disabled");
-      } else {
-        if(banner) banner.classList.remove("show");
-        const waBtn=document.getElementById("wa-btn"); if(waBtn) waBtn.classList.remove("disabled");
-      }
-      const sel=document.getElementById("c-status"); if(sel){ sel.value=S.config.status||"always"; toggleScheduleMode(); }
-      const msgIn=document.getElementById("c-closed-msg"); if(msgIn) msgIn.value=customMsg;
-      renderScheduleDays();
-      const badge=document.getElementById("live-status-badge");
-      if(badge){ badge.className="status-badge "+(open?"open":"closed"); badge.textContent=open?"✅ Abierto ahora":"🔴 Cerrado · "+getNextOpenText(); }
-    }
-    setInterval(applyStatus, 60000);
+// ========= Stats =========
+let statsPeriod='today';
+function setStatsPeriod(period,btn){
+  statsPeriod=period;
+  document.querySelectorAll('.stats-per-btn').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  const custom=document.getElementById('stats-custom-dates');
+  if(custom) custom.style.display=period==='custom'?'flex':'none';
+  renderStats();
+}
+function getStatsDates(){
+  const now=new Date(); let from,to;
+  if(statsPeriod==='today'){ from=new Date(now.getFullYear(),now.getMonth(),now.getDate()); to=new Date(now.getFullYear(),now.getMonth(),now.getDate(),23,59,59); }
+  else if(statsPeriod==='week'){ const day=now.getDay()||7; from=new Date(now); from.setDate(now.getDate()-day+1); from.setHours(0,0,0,0); to=new Date(from); to.setDate(from.getDate()+6); to.setHours(23,59,59,999); }
+  else if(statsPeriod==='month'){ from=new Date(now.getFullYear(),now.getMonth(),1); to=new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59); }
+  else { from=document.getElementById('stats-from')?.value?new Date(document.getElementById('stats-from').value+'T00:00:00'):new Date(0); to=document.getElementById('stats-to')?.value?new Date(document.getElementById('stats-to').value+'T23:59:59'):new Date(); }
+  return {from,to};
+}
+function parseOrderDate(d){ if(!d) return null; const p=d.split(' '), dp=p[0].split('/'); if(dp.length<3) return null; const tp=p[1]?p[1].split(':'):['0','0']; return new Date(parseInt(dp[2]),parseInt(dp[1])-1,parseInt(dp[0]),parseInt(tp[0]||0),parseInt(tp[1]||0)); }
+function renderStats(){
+  const {from,to}=getStatsDates();
+  const kpisEl=document.getElementById('stats-kpis'), topEl=document.getElementById('stats-top'), emptyEl=document.getElementById('stats-empty');
+  if(!kpisEl) return;
+  const orders=S.orders.filter(o=>{ const d=parseOrderDate(o.date); return d&&d>=from&&d<=to; });
+  if(!orders.length){ kpisEl.innerHTML=''; topEl.innerHTML=''; emptyEl.style.display='block'; return; }
+  emptyEl.style.display='none';
+  const totalVentas=orders.reduce((a,o)=>a+(o.total||0),0), cantPedidos=orders.length;
+  let ganancia=0, hasCosting=false;
+  orders.forEach(o=>{ if(o.itemsData?.length) o.itemsData.forEach(it=>{ const prod=S.prods.find(p=>p.id===it.id); if(prod&&prod.cost>0){ hasCosting=true; ganancia+=(prod.price-prod.cost)*it.qty; } }); });
+  kpisEl.innerHTML=`
+    <div class="stat-kpi"><div class="stat-kpi-val">${fmt(totalVentas)}</div><div class="stat-kpi-lbl">Total vendido</div></div>
+    <div class="stat-kpi"><div class="stat-kpi-val">${cantPedidos}</div><div class="stat-kpi-lbl">Pedidos</div></div>
+    <div class="stat-kpi"><div class="stat-kpi-val">${fmt(Math.round(totalVentas/cantPedidos))}</div><div class="stat-kpi-lbl">Ticket promedio</div></div>
+    <div class="stat-kpi"><div class="stat-kpi-val" style="color:${hasCosting?'var(--green)':'var(--txt2)'}">${hasCosting?fmt(ganancia):'—'}</div><div class="stat-kpi-lbl">Ganancia neta</div>${!hasCosting?'<div class="stat-kpi-sub" style="color:var(--txt3)">Cargá precios de costo</div>':''}</div>`;
+  const prodCount={}, prodRev={};
+  orders.forEach(o=>{ if(o.itemsData?.length) o.itemsData.forEach(it=>{ const k=it.name||it.id; prodCount[k]=(prodCount[k]||0)+(it.qty||1); prodRev[k]=(prodRev[k]||0)+((it.price||0)*(it.qty||1)); }); });
+  const sorted=Object.entries(prodCount).sort((a,b)=>b[1]-a[1]).slice(0,5), maxQty=sorted[0]?.[1]||1;
+  topEl.innerHTML=sorted.length?`<div style="font-size:.75rem;font-weight:800;color:var(--txt2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">🏆 Productos más vendidos</div>${sorted.map(([name,qty])=>`<div class="stat-prod-row"><span class="stat-prod-name">${esc(name)}</span><div style="flex:1;display:flex;flex-direction:column;gap:3px;"><div class="stat-prod-bar-wrap"><div class="stat-prod-bar" style="width:${Math.round((qty/maxQty)*100)}%"></div></div></div><span class="stat-prod-qty">${qty} ud.</span><span class="stat-prod-rev">${fmt(prodRev[name]||0)}</span></div>`).join('')}`:'';
+}
 
-    // ========= Mapa =========
-    function openMapModal(){
-      const d=S.config.delivery||{}, addr=d.retiroAddr||"", ref=d.retiroRef||"";
-      if(!addr) return;
-      document.getElementById("map-modal-addr").textContent=addr;
-      const refEl=document.getElementById("map-modal-ref");
-      if(ref){ refEl.textContent="📌 "+ref; refEl.style.display="block"; } else refEl.style.display="none";
-      document.getElementById("map-modal-map").innerHTML=`<iframe width="100%" height="220" frameborder="0" scrolling="no" src="https://maps.google.com/maps?q=${encodeURIComponent(addr)}&output=embed&z=15" style="border:none;width:100%;height:220px;"></iframe>`;
-      document.getElementById("map-modal-gmaps").href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(addr);
-      document.getElementById("map-modal-ov").style.display="block";
-      document.getElementById("map-modal-box").style.display="block";
-      document.body.style.overflow="hidden";
-    }
-    function closeMapModal(){ document.getElementById("map-modal-ov").style.display="none"; document.getElementById("map-modal-box").style.display="none"; document.body.style.overflow=""; }
+// ========= Horario =========
+const DAYS=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+const DEFAULT_SCHEDULE=[{open:false,from:"09:00",to:"18:00"},{open:true,from:"09:00",to:"20:00"},{open:true,from:"09:00",to:"20:00"},{open:true,from:"09:00",to:"20:00"},{open:true,from:"09:00",to:"20:00"},{open:true,from:"09:00",to:"20:00"},{open:true,from:"09:00",to:"14:00"}];
+function toggleScheduleMode(){ const val=document.getElementById("c-status")?.value, wrap=document.getElementById("schedule-wrap"); if(wrap) wrap.style.display=val==="schedule"?"block":"none"; }
+function renderScheduleDays(){
+  const wrap=document.getElementById("schedule-days"); if(!wrap) return;
+  const sched=S.config.schedule||DEFAULT_SCHEDULE;
+  wrap.innerHTML=DAYS.map((d,i)=>{ const day=sched[i]||DEFAULT_SCHEDULE[i]; return `<div class="day-row"><span class="day-name">${d}</span><label class="day-toggle"><input type="checkbox" id="day-open-${i}" ${day.open?'checked':''} onchange="updateDayOpen(${i})"><span class="day-toggle-slider"></span></label><div class="day-times" id="day-times-${i}" style="${day.open?'':'opacity:.35;pointer-events:none;'}"><input type="time" id="day-from-${i}" value="${day.from||'09:00'}"><span style="font-size:.75rem;color:var(--txt3);">a</span><input type="time" id="day-to-${i}" value="${day.to||'20:00'}"></div>${!day.open?'<span class="day-closed-lbl">Cerrado</span>':''}</div>`; }).join('');
+}
+function updateDayOpen(i){ const chk=document.getElementById('day-open-'+i), times=document.getElementById('day-times-'+i); if(times) times.style.cssText=chk.checked?'':'opacity:.35;pointer-events:none;'; renderScheduleDays(); }
+function getScheduleFromForm(){ return DAYS.map((_,i)=>({open:document.getElementById('day-open-'+i)?.checked||false,from:document.getElementById('day-from-'+i)?.value||'09:00',to:document.getElementById('day-to-'+i)?.value||'20:00'})); }
+function isOpenNow(){
+  const status=S.config.status||"always"; if(status==="always") return true; if(status!=="schedule") return true;
+  const sched=S.config.schedule||DEFAULT_SCHEDULE, now=new Date(), dayIdx=now.getDay(), day=sched[dayIdx];
+  if(!day||!day.open) return false;
+  const [fh,fm]=(day.from||"09:00").split(":").map(Number), [th,tm]=(day.to||"20:00").split(":").map(Number);
+  const nowMin=now.getHours()*60+now.getMinutes();
+  return nowMin>=(fh*60+fm)&&nowMin<(th*60+tm);
+}
+async function saveStatus(){
+  S.config.status=document.getElementById("c-status").value;
+  S.config.closedMsg=document.getElementById("c-closed-msg").value.trim();
+  if(S.config.status==="schedule") S.config.schedule=getScheduleFromForm();
+  await saveConfigToSupabase(); applyStatus(); toast("✔ Horario guardado");
+}
+function getNextOpenText(){
+  const sched=S.config.schedule||DEFAULT_SCHEDULE, now=new Date(), todayIdx=now.getDay(), nowMin=now.getHours()*60+now.getMinutes();
+  const today=sched[todayIdx];
+  if(today&&today.open){ const [fh,fm]=(today.from||"09:00").split(":").map(Number); if(nowMin<fh*60+fm) return "Abrimos hoy a las "+today.from+"hs"; }
+  for(let i=1;i<=7;i++){ const idx=(todayIdx+i)%7, day=sched[idx]; if(day&&day.open) return "Abrimos "+(i===1?"mañana":DAYS[idx])+" a las "+(day.from||"09:00")+"hs"; }
+  return "Próximamente";
+}
+function applyStatus(){
+  const open=isOpenNow(), customMsg=S.config.closedMsg||"";
+  const banner=document.getElementById("closed-banner");
+  if(!open){
+    if(banner) banner.classList.add("show");
+    const nextText=S.config.status==="schedule"?getNextOpenText():"";
+    document.getElementById("closed-banner-title").textContent="En este momento estamos cerrados";
+    const bm=document.getElementById("closed-banner-msg");
+    if(bm) bm.textContent=customMsg||(nextText||"Podés ver el catálogo pero no realizar pedidos.");
+    const waBtn=document.getElementById("wa-btn"); if(waBtn) waBtn.classList.add("disabled");
+  } else {
+    if(banner) banner.classList.remove("show");
+    const waBtn=document.getElementById("wa-btn"); if(waBtn) waBtn.classList.remove("disabled");
+  }
+  const sel=document.getElementById("c-status"); if(sel){ sel.value=S.config.status||"always"; toggleScheduleMode(); }
+  const msgIn=document.getElementById("c-closed-msg"); if(msgIn) msgIn.value=customMsg;
+  renderScheduleDays();
+  const badge=document.getElementById("live-status-badge");
+  if(badge){ badge.className="status-badge "+(open?"open":"closed"); badge.textContent=open?"✅ Abierto ahora":"🔴 Cerrado · "+getNextOpenText(); }
+}
+setInterval(applyStatus, 60000);
 
-    boot();
+// ========= Mapa =========
+function openMapModal(){
+  const d=S.config.delivery||{}, addr=d.retiroAddr||"", ref=d.retiroRef||"";
+  if(!addr) return;
+  document.getElementById("map-modal-addr").textContent=addr;
+  const refEl=document.getElementById("map-modal-ref");
+  if(ref){ refEl.textContent="📌 "+ref; refEl.style.display="block"; } else refEl.style.display="none";
+  document.getElementById("map-modal-map").innerHTML=`<iframe width="100%" height="220" frameborder="0" scrolling="no" src="https://maps.google.com/maps?q=${encodeURIComponent(addr)}&output=embed&z=15" style="border:none;width:100%;height:220px;"></iframe>`;
+  document.getElementById("map-modal-gmaps").href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(addr);
+  document.getElementById("map-modal-ov").style.display="block";
+  document.getElementById("map-modal-box").style.display="block";
+  document.body.style.overflow="hidden";
+}
+function closeMapModal(){ document.getElementById("map-modal-ov").style.display="none"; document.getElementById("map-modal-box").style.display="none"; document.body.style.overflow=""; }
 
-    // ========= CAROUSEL =========
-    function goSlide(prodId, idxOrDelta, isDelta){
-      const total = S._carouselTotal || 1;
-      if(total <= 1) return;
-      let idx = isDelta ? (S._carouselIdx + idxOrDelta + total) % total : idxOrDelta;
-      S._carouselIdx = idx;
-      const track = document.getElementById('carousel-track');
-      if(track) track.style.transform = `translateX(-${idx*100}%)`;
-      document.querySelectorAll('.mod-carousel-dot').forEach((d,i)=> d.classList.toggle('on', i===idx));
-    }
+boot();
+
+// ========= CAROUSEL =========
+function goSlide(prodId, idxOrDelta, isDelta){
+  const total = S._carouselTotal || 1;
+  if(total <= 1) return;
+  let idx = isDelta ? (S._carouselIdx + idxOrDelta + total) % total : idxOrDelta;
+  S._carouselIdx = idx;
+  const track = document.getElementById('carousel-track');
+  if(track) track.style.transform = `translateX(-${idx*100}%)`;
+  document.querySelectorAll('.mod-carousel-dot').forEach((d,i)=> d.classList.toggle('on', i===idx));
+}
 
 
-    function renderProdImageGrid(gridId, imgsArr, maxSlots){
-      const grid = document.getElementById(gridId);
-      if(!grid) return;
-      const isAdd = gridId === 'p-img-grid';
-      const inputId = isAdd ? 'p-img-hidden' : 'ep-img';
-      let html = '';
-      imgsArr.forEach((src, i) => {
-        html += `<div class="img-slot" title="Tocá para recortar">
-          <img src="${src}" alt="" onclick="cropExistingSlot('${gridId}',${i})">
-          <button class="slot-rm" onclick="removeProdImg('${gridId}',${i})">✕</button>
-        </div>`;
-      });
-      if(imgsArr.length < maxSlots){
-        html += `<div class="img-slot img-slot-add" onclick="document.getElementById('${inputId}').click()">
-          <span class="slot-ph">+</span>
-        </div>`;
-      }
-      grid.innerHTML = html;
+function renderProdImageGrid(gridId, imgsArr, maxSlots){
+  const grid = document.getElementById(gridId);
+  if(!grid) return;
+  const isAdd = gridId === 'p-img-grid';
+  const inputId = isAdd ? 'p-img-hidden' : 'ep-img';
+  let html = '';
+  imgsArr.forEach((src, i) => {
+    html += `<div class="img-slot" title="Tocá para recortar">
+      <img src="${src}" alt="" onclick="cropExistingSlot('${gridId}',${i})">
+      <button class="slot-rm" onclick="removeProdImg('${gridId}',${i})">✕</button>
+    </div>`;
+  });
+  if(imgsArr.length < maxSlots){
+    html += `<div class="img-slot img-slot-add" onclick="document.getElementById('${inputId}').click()">
+      <span class="slot-ph">+</span>
+    </div>`;
+  }
+  grid.innerHTML = html;
 
-      // Wire up file input — load all files directly, no crop queue
-      const inp = document.getElementById(inputId);
-      if(!inp) return;
-      inp.multiple = true;
-      inp.onchange = function(){
-        const files = Array.from(this.files);
-        if(!files.length) return;
-        const arr = isAdd ? (window._prodImages||(window._prodImages=[])) : (S._editProdImages||(S._editProdImages=[]));
-        let loaded = 0;
-        files.forEach(function(f){
-          if(arr.length >= maxSlots) return;
-          const r = new FileReader();
-          r.onload = function(ev){
-            arr.push(ev.target.result);
-            loaded++;
-            if(loaded === Math.min(files.length, maxSlots - (arr.length - loaded))){
-              renderProdImageGrid(gridId, arr, maxSlots);
-            } else {
-              renderProdImageGrid(gridId, arr, maxSlots);
-            }
-          };
-          r.readAsDataURL(f);
-        });
-        inp.value='';
-      };
-    }
-
-    // Crop an already-loaded slot image
-    function cropExistingSlot(gridId, idx){
-      const arr = gridId === 'p-img-grid' ? (window._prodImages||[]) : (S._editProdImages||[]);
-      const src = arr[idx];
-      if(!src) return;
-      openCrop(src, function(cropped){
-        arr[idx] = cropped;
-        renderProdImageGrid(gridId, arr, 5);
-      });
-    }
-
-    function removeProdImg(gridId, idx){
-      if(gridId === 'p-img-grid'){
-        if(!window._prodImages) window._prodImages = [];
-        window._prodImages.splice(idx, 1);
-        renderProdImageGrid(gridId, window._prodImages, 5);
-      } else {
-        if(!S._editProdImages) S._editProdImages = [];
-        S._editProdImages.splice(idx, 1);
-        renderProdImageGrid(gridId, S._editProdImages, 5);
-      }
-    }
-
-    // ========= CROP / IMAGE EDITOR =========
-    let _cropCallback = null;
-    let _cropImg = new Image();
-    let _cropState = { x:0, y:0, zoom:1, dragging:false, lastX:0, lastY:0, lastDist:0 };
-    let _cropCanvas, _cropCtx, _cropContainer;
-
-    function openCrop(imageSrc, callback){
-      _cropCallback = callback;
-      _cropState = { x:0, y:0, zoom:1, dragging:false, lastX:0, lastY:0, lastDist:0 };
-
-      const ov = document.getElementById('crop-ov');
-      ov.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-
-      _cropCanvas = document.getElementById('crop-canvas');
-      _cropCtx = _cropCanvas.getContext('2d');
-      _cropContainer = document.getElementById('crop-container');
-
-      _cropImg = new Image();
-      _cropImg.onload = function(){
-        resizeCropCanvas();
-        drawCrop();
-      };
-      _cropImg.src = imageSrc;
-
-      // Zoom slider
-      const zoomSlider = document.getElementById('crop-zoom');
-      zoomSlider.value = 1;
-      zoomSlider.oninput = function(){
-        _cropState.zoom = parseFloat(this.value);
-        clampCrop();
-        drawCrop();
-      };
-
-      // Mouse events
-      _cropCanvas.onmousedown = function(e){ _cropState.dragging=true; _cropState.lastX=e.clientX; _cropState.lastY=e.clientY; _cropCanvas.style.cursor='grabbing'; };
-      window.onmousemove = function(e){
-        if(!_cropState.dragging) return;
-        _cropState.x += e.clientX - _cropState.lastX;
-        _cropState.y += e.clientY - _cropState.lastY;
-        _cropState.lastX=e.clientX; _cropState.lastY=e.clientY;
-        clampCrop(); drawCrop();
-      };
-      window.onmouseup = function(){ _cropState.dragging=false; _cropCanvas.style.cursor='grab'; };
-
-      // Touch events
-      _cropCanvas.ontouchstart = function(e){
-        e.preventDefault();
-        if(e.touches.length===1){
-          _cropState.dragging=true;
-          _cropState.lastX=e.touches[0].clientX;
-          _cropState.lastY=e.touches[0].clientY;
-        } else if(e.touches.length===2){
-          _cropState.dragging=false;
-          _cropState.lastDist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
-        }
-      };
-      _cropCanvas.ontouchmove = function(e){
-        e.preventDefault();
-        if(e.touches.length===1 && _cropState.dragging){
-          _cropState.x += e.touches[0].clientX - _cropState.lastX;
-          _cropState.y += e.touches[0].clientY - _cropState.lastY;
-          _cropState.lastX=e.touches[0].clientX;
-          _cropState.lastY=e.touches[0].clientY;
-          clampCrop(); drawCrop();
-        } else if(e.touches.length===2){
-          const dist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
-          const delta = dist - _cropState.lastDist;
-          _cropState.zoom = Math.max(1, Math.min(4, _cropState.zoom + delta*0.01));
-          document.getElementById('crop-zoom').value = _cropState.zoom;
-          _cropState.lastDist = dist;
-          clampCrop(); drawCrop();
-        }
-      };
-      _cropCanvas.ontouchend = function(){ _cropState.dragging=false; };
-    }
-
-    function resizeCropCanvas(){
-      const w = _cropContainer.offsetWidth;
-      const h = _cropContainer.offsetHeight;
-      _cropCanvas.width = w;
-      _cropCanvas.height = h;
-      // Fit entire image inside canvas first (zoom to fit)
-      const scaleToFit = Math.min(w/_cropImg.width, h/_cropImg.height);
-      // Then use the larger scale so it fills the area (cover), but start at fit
-      const scaleToCover = Math.max(w/_cropImg.width, h/_cropImg.height);
-      // Start at cover so no empty space, but min zoom = scaleToFit so user can zoom out to see full image
-      _cropState.minZoom = scaleToFit;
-      _cropState.zoom = scaleToCover;
-      // Update slider: min = scaleToFit, max = scaleToFit*4
-      const slider = document.getElementById('crop-zoom');
-      slider.min = scaleToFit;
-      slider.max = scaleToFit * 4;
-      slider.step = scaleToFit * 0.01;
-      slider.value = _cropState.zoom;
-      _cropState.x = (w - _cropImg.width * _cropState.zoom) / 2;
-      _cropState.y = (h - _cropImg.height * _cropState.zoom) / 2;
-      clampCrop();
-    }
-
-    function clampCrop(){
-      const w = _cropCanvas.width, h = _cropCanvas.height;
-      const iw = _cropImg.width * _cropState.zoom;
-      const ih = _cropImg.height * _cropState.zoom;
-      if(iw >= w){ _cropState.x = Math.min(0, Math.max(_cropState.x, w - iw)); }
-      else { _cropState.x = (w - iw) / 2; }
-      if(ih >= h){ _cropState.y = Math.min(0, Math.max(_cropState.y, h - ih)); }
-      else { _cropState.y = (h - ih) / 2; }
-    }
-
-    function drawCrop(){
-      if(!_cropCtx) return;
-      const w = _cropCanvas.width, h = _cropCanvas.height;
-      _cropCtx.clearRect(0,0,w,h);
-      _cropCtx.drawImage(_cropImg, _cropState.x, _cropState.y, _cropImg.width*_cropState.zoom, _cropImg.height*_cropState.zoom);
-      // Draw grid lines
-      _cropCtx.strokeStyle = 'rgba(255,255,255,0.18)';
-      _cropCtx.lineWidth = 1;
-      _cropCtx.beginPath();
-      _cropCtx.moveTo(w/3,0); _cropCtx.lineTo(w/3,h);
-      _cropCtx.moveTo(w*2/3,0); _cropCtx.lineTo(w*2/3,h);
-      _cropCtx.moveTo(0,h/3); _cropCtx.lineTo(w,h/3);
-      _cropCtx.moveTo(0,h*2/3); _cropCtx.lineTo(w,h*2/3);
-      _cropCtx.stroke();
-    }
-
-    function confirmCrop(){
-      // Export canvas as base64
-      const dataUrl = _cropCanvas.toDataURL('image/jpeg', 0.88);
-      closeCrop();
-      if(_cropCallback) _cropCallback(dataUrl);
-    }
-
-    function closeCrop(){
-      document.getElementById('crop-ov').style.display = 'none';
-      document.body.style.overflow = '';
-      _cropCallback = null;
-    }
-
-    // Helper: open file picker then crop
-    function pickAndCrop(inputId, previewId, onDone){
-      const file = document.getElementById(inputId).files?.[0];
-      if(!file) return;
+  // Wire up file input — load all files directly, no crop queue
+  const inp = document.getElementById(inputId);
+  if(!inp) return;
+  inp.multiple = true;
+  inp.onchange = function(){
+    const files = Array.from(this.files);
+    if(!files.length) return;
+    const arr = isAdd ? (window._prodImages||(window._prodImages=[])) : (S._editProdImages||(S._editProdImages=[]));
+    let loaded = 0;
+    files.forEach(function(f){
+      if(arr.length >= maxSlots) return;
       const r = new FileReader();
-      r.onload = function(e){
-        openCrop(e.target.result, function(cropped){
-          // Show preview
-          if(previewId){
-            document.getElementById(previewId).innerHTML = `<img src="${cropped}" style="width:100%;height:90px;object-fit:cover;border-radius:10px;border:1px solid var(--accent);margin-top:4px;">`;
-          }
-          if(onDone) onDone(cropped);
-        });
+      r.onload = function(ev){
+        arr.push(ev.target.result);
+        loaded++;
+        if(loaded === Math.min(files.length, maxSlots - (arr.length - loaded))){
+          renderProdImageGrid(gridId, arr, maxSlots);
+        } else {
+          renderProdImageGrid(gridId, arr, maxSlots);
+        }
       };
-      r.readAsDataURL(file);
+      r.readAsDataURL(f);
+    });
+    inp.value='';
+  };
+}
+
+// Crop an already-loaded slot image
+function cropExistingSlot(gridId, idx){
+  const arr = gridId === 'p-img-grid' ? (window._prodImages||[]) : (S._editProdImages||[]);
+  const src = arr[idx];
+  if(!src) return;
+  openCrop(src, function(cropped){
+    arr[idx] = cropped;
+    renderProdImageGrid(gridId, arr, 5);
+  });
+}
+
+function removeProdImg(gridId, idx){
+  if(gridId === 'p-img-grid'){
+    if(!window._prodImages) window._prodImages = [];
+    window._prodImages.splice(idx, 1);
+    renderProdImageGrid(gridId, window._prodImages, 5);
+  } else {
+    if(!S._editProdImages) S._editProdImages = [];
+    S._editProdImages.splice(idx, 1);
+    renderProdImageGrid(gridId, S._editProdImages, 5);
+  }
+}
+
+// ========= CROP / IMAGE EDITOR =========
+let _cropCallback = null;
+let _cropImg = new Image();
+let _cropState = { x:0, y:0, zoom:1, dragging:false, lastX:0, lastY:0, lastDist:0 };
+let _cropCanvas, _cropCtx, _cropContainer;
+
+function openCrop(imageSrc, callback){
+  _cropCallback = callback;
+  _cropState = { x:0, y:0, zoom:1, dragging:false, lastX:0, lastY:0, lastDist:0 };
+
+  const ov = document.getElementById('crop-ov');
+  ov.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  _cropCanvas = document.getElementById('crop-canvas');
+  _cropCtx = _cropCanvas.getContext('2d');
+  _cropContainer = document.getElementById('crop-container');
+
+  _cropImg = new Image();
+  _cropImg.onload = function(){
+    resizeCropCanvas();
+    drawCrop();
+  };
+  _cropImg.src = imageSrc;
+
+  // Zoom slider
+  const zoomSlider = document.getElementById('crop-zoom');
+  zoomSlider.value = 1;
+  zoomSlider.oninput = function(){
+    _cropState.zoom = parseFloat(this.value);
+    clampCrop();
+    drawCrop();
+  };
+
+  // Mouse events
+  _cropCanvas.onmousedown = function(e){ _cropState.dragging=true; _cropState.lastX=e.clientX; _cropState.lastY=e.clientY; _cropCanvas.style.cursor='grabbing'; };
+  window.onmousemove = function(e){
+    if(!_cropState.dragging) return;
+    _cropState.x += e.clientX - _cropState.lastX;
+    _cropState.y += e.clientY - _cropState.lastY;
+    _cropState.lastX=e.clientX; _cropState.lastY=e.clientY;
+    clampCrop(); drawCrop();
+  };
+  window.onmouseup = function(){ _cropState.dragging=false; _cropCanvas.style.cursor='grab'; };
+
+  // Touch events
+  _cropCanvas.ontouchstart = function(e){
+    e.preventDefault();
+    if(e.touches.length===1){
+      _cropState.dragging=true;
+      _cropState.lastX=e.touches[0].clientX;
+      _cropState.lastY=e.touches[0].clientY;
+    } else if(e.touches.length===2){
+      _cropState.dragging=false;
+      _cropState.lastDist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
     }
+  };
+  _cropCanvas.ontouchmove = function(e){
+    e.preventDefault();
+    if(e.touches.length===1 && _cropState.dragging){
+      _cropState.x += e.touches[0].clientX - _cropState.lastX;
+      _cropState.y += e.touches[0].clientY - _cropState.lastY;
+      _cropState.lastX=e.touches[0].clientX;
+      _cropState.lastY=e.touches[0].clientY;
+      clampCrop(); drawCrop();
+    } else if(e.touches.length===2){
+      const dist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+      const delta = dist - _cropState.lastDist;
+      _cropState.zoom = Math.max(1, Math.min(4, _cropState.zoom + delta*0.01));
+      document.getElementById('crop-zoom').value = _cropState.zoom;
+      _cropState.lastDist = dist;
+      clampCrop(); drawCrop();
+    }
+  };
+  _cropCanvas.ontouchend = function(){ _cropState.dragging=false; };
+}
+
+function resizeCropCanvas(){
+  const w = _cropContainer.offsetWidth;
+  const h = _cropContainer.offsetHeight;
+  _cropCanvas.width = w;
+  _cropCanvas.height = h;
+  // Fit entire image inside canvas first (zoom to fit)
+  const scaleToFit = Math.min(w/_cropImg.width, h/_cropImg.height);
+  // Then use the larger scale so it fills the area (cover), but start at fit
+  const scaleToCover = Math.max(w/_cropImg.width, h/_cropImg.height);
+  // Start at cover so no empty space, but min zoom = scaleToFit so user can zoom out to see full image
+  _cropState.minZoom = scaleToFit;
+  _cropState.zoom = scaleToCover;
+  // Update slider: min = scaleToFit, max = scaleToFit*4
+  const slider = document.getElementById('crop-zoom');
+  slider.min = scaleToFit;
+  slider.max = scaleToFit * 4;
+  slider.step = scaleToFit * 0.01;
+  slider.value = _cropState.zoom;
+  _cropState.x = (w - _cropImg.width * _cropState.zoom) / 2;
+  _cropState.y = (h - _cropImg.height * _cropState.zoom) / 2;
+  clampCrop();
+}
+
+function clampCrop(){
+  const w = _cropCanvas.width, h = _cropCanvas.height;
+  const iw = _cropImg.width * _cropState.zoom;
+  const ih = _cropImg.height * _cropState.zoom;
+  if(iw >= w){ _cropState.x = Math.min(0, Math.max(_cropState.x, w - iw)); }
+  else { _cropState.x = (w - iw) / 2; }
+  if(ih >= h){ _cropState.y = Math.min(0, Math.max(_cropState.y, h - ih)); }
+  else { _cropState.y = (h - ih) / 2; }
+}
+
+function drawCrop(){
+  if(!_cropCtx) return;
+  const w = _cropCanvas.width, h = _cropCanvas.height;
+  _cropCtx.clearRect(0,0,w,h);
+  _cropCtx.drawImage(_cropImg, _cropState.x, _cropState.y, _cropImg.width*_cropState.zoom, _cropImg.height*_cropState.zoom);
+  // Draw grid lines
+  _cropCtx.strokeStyle = 'rgba(255,255,255,0.18)';
+  _cropCtx.lineWidth = 1;
+  _cropCtx.beginPath();
+  _cropCtx.moveTo(w/3,0); _cropCtx.lineTo(w/3,h);
+  _cropCtx.moveTo(w*2/3,0); _cropCtx.lineTo(w*2/3,h);
+  _cropCtx.moveTo(0,h/3); _cropCtx.lineTo(w,h/3);
+  _cropCtx.moveTo(0,h*2/3); _cropCtx.lineTo(w,h*2/3);
+  _cropCtx.stroke();
+}
+
+function confirmCrop(){
+  // Export canvas as base64
+  const dataUrl = _cropCanvas.toDataURL('image/jpeg', 0.88);
+  closeCrop();
+  if(_cropCallback) _cropCallback(dataUrl);
+}
+
+function closeCrop(){
+  document.getElementById('crop-ov').style.display = 'none';
+  document.body.style.overflow = '';
+  _cropCallback = null;
+}
+
+// Helper: open file picker then crop
+function pickAndCrop(inputId, previewId, onDone){
+  const file = document.getElementById(inputId).files?.[0];
+  if(!file) return;
+  const r = new FileReader();
+  r.onload = function(e){
+    openCrop(e.target.result, function(cropped){
+      // Show preview
+      if(previewId){
+        document.getElementById(previewId).innerHTML = `<img src="${cropped}" style="width:100%;height:90px;object-fit:cover;border-radius:10px;border:1px solid var(--accent);margin-top:4px;">`;
+      }
+      if(onDone) onDone(cropped);
+    });
+  };
+  r.readAsDataURL(file);
+}
+```
 
   </script>
 
   <!-- MAP MODAL -->
+
   <div id="map-modal-ov" onclick="closeMapModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);z-index:700;align-items:center;justify-content:center;padding:20px;"></div>
   <div id="map-modal-box" style="display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:701;background:var(--s1);border:1px solid var(--line);border-radius:24px;padding:24px;width:calc(100% - 40px);max-width:420px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
@@ -2651,6 +2673,7 @@
   </div>
 
   <!-- CROP MODAL -->
+
   <div id="crop-ov" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:800;flex-direction:column;align-items:center;justify-content:center;padding:16px;">
     <div style="width:100%;max-width:480px;display:flex;flex-direction:column;gap:12px;">
       <div style="display:flex;align-items:center;justify-content:space-between;">
