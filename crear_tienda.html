@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crear tu tienda | ComercioYa</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial;
+background:linear-gradient(135deg,#0f172a,#020617);
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+}
+
+.container{
+width:100%;
+max-width:420px;
+padding:30px;
+}
+
+.card{
+background:#111827;
+padding:40px 30px;
+border-radius:16px;
+box-shadow:0 20px 40px rgba(0,0,0,0.5);
+}
+
+h1{
+margin:0 0 25px 0;
+font-size:30px;
+text-align:center;
+}
+
+input{
+width:100%;
+padding:14px;
+margin-bottom:14px;
+border-radius:10px;
+border:none;
+font-size:16px;
+background:#f1f5f9;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:12px;
+background:linear-gradient(90deg,#6366f1,#8b5cf6);
+color:white;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+transition:0.2s;
+}
+
+button:hover{
+transform:translateY(-1px);
+opacity:0.95;
+}
+
+.logo{
+text-align:center;
+font-weight:700;
+font-size:22px;
+margin-bottom:10px;
+color:#a78bfa;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<div class="logo">ComercioYa</div>
+
+<h1>Crear tu tienda</h1>
+
+<input id="email" placeholder="Email">
+
+<input id="password" type="password" placeholder="Contraseña">
+
+<input id="nombreTienda" placeholder="Nombre de tu tienda">
+
+<button onclick="crear()">Crear tienda</button>
+
+</div>
+</div>
+
+<script>
+
+const supabase = window.supabase.createClient(
+"https://tqqemmwxulvlwfyjlyya.supabase.co",
+"sb_publishable_GGQSguoAFktzQdH2zzAjrQ_GyGLp44P"
+);
+
+async function crear(){
+
+const email=document.getElementById("email").value
+const password=document.getElementById("password").value
+const nombre=document.getElementById("nombreTienda").value
+
+if(!email || !password || !nombre){
+alert("Completa todos los campos")
+return
+}
+
+// crear usuario
+const {error}=await supabase.auth.signUp({
+email:email,
+password:password
+})
+
+if(error){
+alert(error.message)
+return
+}
+
+// login para obtener sesión
+await supabase.auth.signInWithPassword({
+email:email,
+password:password
+})
+
+// crear tienda
+const {error:rpcError}=await supabase.rpc("crear_tienda",{nombre_tienda:nombre})
+
+if(rpcError){
+alert(rpcError.message)
+return
+}
+
+alert("Tienda creada correctamente")
+
+}
+
+</script>
+
+</body>
+</html>
