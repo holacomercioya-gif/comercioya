@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Crear tienda</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body{
+font-family:Arial;
+background:#0b0b12;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.card{
+background:#15151f;
+padding:40px;
+border-radius:14px;
+width:320px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-bottom:12px;
+border-radius:8px;
+border:none;
+background:#e5e8a8;
+}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+background:linear-gradient(90deg,#6d6cff,#9f7cff);
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Crear tu tienda</h2>
+
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Contraseña">
+<input id="nombre" placeholder="Nombre de tienda">
+
+<button onclick="crear()">Crear tienda</button>
+
+</div>
+
+<script>
+
+const supabase = window.supabase.createClient(
+"https://tqqemmwxulvlwfyjlyya.supabase.co",
+"sb_publishable_GGQSguoAFktzQdH2zzAjrQ_GyGLp44P"
+)
+
+async function crear(){
+
+const email = document.getElementById("email").value
+const password = document.getElementById("password").value
+const nombre = document.getElementById("nombre").value
+
+// crear usuario
+const { data, error } = await supabase.auth.signUp({
+email: email,
+password: password
+})
+
+if(error){
+alert(error.message)
+return
+}
+
+// iniciar sesión
+await supabase.auth.signInWithPassword({
+email: email,
+password: password
+})
+
+// crear tienda
+const { error: tiendaError } = await supabase.rpc("crear_tienda", {
+nombre_tienda: nombre
+})
+
+if(tiendaError){
+alert(tiendaError.message)
+return
+}
+
+alert("Tienda creada correctamente")
+
+}
+
+</script>
+
+</body>
+</html>
