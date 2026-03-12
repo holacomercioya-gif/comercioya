@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crear tu tienda | ComercioYa</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body{
+font-family: Arial, sans-serif;
+background:#0d0d0f;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+margin:0;
+}
+
+.card{
+background:#1c1c1f;
+padding:40px;
+border-radius:16px;
+width:90%;
+max-width:420px;
+}
+
+h1{margin-bottom:20px;}
+
+input{
+width:100%;
+padding:14px;
+margin-bottom:12px;
+border-radius:8px;
+border:none;
+background:#2a2a2e;
+color:white;
+}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+background:#7c5cfc;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+button:disabled{
+opacity:0.6;
+cursor:not-allowed;
+}
+
+.msg{
+margin-top:15px;
+font-size:14px;
+color:#9ca3af;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>Crear tu tienda</h1>
+
+<input id="email" placeholder="Email administrador">
+<input id="pass" type="password" placeholder="Contraseña">
+<input id="tienda" placeholder="Nombre de tu tienda">
+
+<button id="btn" onclick="crear()">Crear tienda</button>
+
+<div class="msg" id="msg"></div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL = "https://ggqsguoafktzqdh2zzajrq.supabase.co";
+const SUPABASE_KEY = "sb_publishable_GGQSguoAFktzQdH2zzAjrQ_GyGLp44P";
+
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function crear(){
+
+const btn = document.getElementById("btn");
+const msg = document.getElementById("msg");
+
+let email=document.getElementById("email").value.trim();
+let pass=document.getElementById("pass").value.trim();
+let nombre=document.getElementById("tienda").value.trim().toLowerCase().replace(/ /g,"-");
+
+if(!email || !pass || !nombre){
+alert("Completá todos los campos");
+return;
+}
+
+btn.disabled=true;
+msg.innerText="Creando cuenta...";
+
+const { data, error } = await client.auth.signUp({
+email:email,
+password:pass
+});
+
+if(error){
+btn.disabled=false;
+msg.innerText="";
+alert(error.message);
+return;
+}
+
+msg.innerText="Cuenta creada. Entrando a tu tienda...";
+
+setTimeout(()=>{
+window.location.href="https://comercioya.com.ar/?tienda="+nombre;
+},1200);
+
+}
+
+</script>
+
+</body>
+</html>
