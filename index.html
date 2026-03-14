@@ -2966,12 +2966,6 @@
     return result;
   };
 
-    let result = await supa('stores?id=eq.' + storeId, 'PATCH', row);
-    if(!result){
-      result = await supa('stores', 'POST', Object.assign({id: storeId}, row));
-    }
-    return result;
-  };
 
   window.saveTheme = async function(){
     S.config.theme = {
